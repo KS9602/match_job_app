@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% include 'navbar.html'%}
+    
+    {%if messages%}
+    {%for message in messages%}
+        <p>{{message}}</p>
+    {%endfor%}
+    {% endif %}
+
+    <p>Imie: {{employee.name}}</p> 
+    <p>Nazwisko: {{employee.last_name}}</p>
+    <p> Dostepny od:{{employee.available_from}} do {{employee.available_to}}</p> 
+
+    <table>
+        <tr>
+          <th>Język</th>
+          <th>Poziom</th>
+          <th>Edytuj</th>
+          <th>Usuń</th>
+        </tr>
+         {% for language in languages%}
+         <tr>
+            <th>{{language.language_name}}</th>
+            <th>{{language.level}}</th>
+            <th><a href="{% url 'employee_language_update' employee.id language.id%}">Edytuj</a></th>
+            <th><a href="{% url 'employee_language_delete' employee.id language.id%}">Usuń</a></th>
+          </tr>
+          {% endfor%}
+      </table>
+
+    <p><a href="{% url 'employee_profile_update' employee.id%}">Edytuj dane</a></p>
+    <a href="{% url 'employee_add_language' employee.id%}"><p>Dodaj język </p> 
+    <a href="{% url 'employee_add_job' employee.id%}"><p>Dodaj pracę</p></a>
+    
+    
+</body>
+</html>

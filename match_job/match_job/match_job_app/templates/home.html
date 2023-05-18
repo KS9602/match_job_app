@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        {% include 'navbar.html'%}
+    </header>
+ <main>
+    {% if uesr.employee%}
+    <p> xxx</p>
+    {% endif%}
+    
+    {%if messages%}
+        {%for message in messages%}
+            <p>{{message}}</p>
+        {%endfor%}
+    {% endif %}
+
+
+
+ </main>
+    <footer>
+        <div class="footer_div" >
+            <div class="footer_box_01">
+                <ul>
+                    <li>Punkt pierwszy</li>
+                    <li>Regulamin</li>
+                    <li>Polityka Cookies</li>
+                    <li>Właśność intelektualna</li>
+                </ul>
+            </div>
+            <div class="footer_box_02">                
+                <ul>
+                    <li>O Nas</li>
+                    <li>Idea</li>
+                    <li>Kariera</li>
+                    <li>Blog</li>
+                </ul>
+            </div>
+            <div class="footer_box_03">                
+                <ul>
+                    <li>Społeczność</li>
+                    <li>link</li>
+                    <li>link</li>
+                    <li>link</li>
+                </ul>
+            </div>
+            <div class="footer_box_04">                
+                <ul>
+                    <li>Kontakt</li>
+                    <li>link</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
