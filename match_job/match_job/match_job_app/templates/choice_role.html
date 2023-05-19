@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{%extends 'base.html'%}
+{% block title%} Dodaj język{% endblock%}
+{% block body%}
+<form method="post">
    <a href="{% url 'registration_employee' %}"><p>Pracownik</p></a>
     <a href="{% url 'registration_employer' %}"><p>Pracodawca</p></a>
 </form>
-</body>
-</html>
+{% endblock%}

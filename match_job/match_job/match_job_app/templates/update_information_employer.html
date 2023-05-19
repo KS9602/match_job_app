@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+{% block title%} Dodaj język{% endblock%}
+{% block body%}
+
+    {% include 'navbar.html'%}
+    <form method="post" enctype=multipart/form-data>
+        {% csrf_token%}
+    {% for field in form%}
+        {% if field.errors %}
+        <ul class="errorlist">
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <hr>{{field.label}} {{field}}
+    {% endfor%}
+    <input type="submit">
+    </form>
+{% endblock%}

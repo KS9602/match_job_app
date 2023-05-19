@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% include 'navbar.html'%}
+{%extends 'base.html'%}
+{% block title%} Dodaj poprzedni zawód{% endblock%}
+{% block body%}
+    <a href="{% url 'home'%}"><h1>Match Job</h1></a>
+    <h2 style="background-color: rgb(234, 54, 54);color:aliceblue">Profil Pracownika</h2>
     
     {%if messages%}
     {%for message in messages%}
@@ -19,6 +14,9 @@
     <p>Nazwisko: {{employee.last_name}}</p>
     <p> Dostepny od:{{employee.available_from}} do {{employee.available_to}}</p> 
 
+    {% if employee.profile_pic %}
+    <img src="{{employee.profile_pic.url}}" width="200">
+    {% endif%}
     <table>
         <tr>
           <th>Język</th>
@@ -36,10 +34,29 @@
           {% endfor%}
       </table>
 
+      <table>
+        <tr>
+          <th>Zawód</th>
+          <th>Opis</th>
+          <th>Okres pracy</th>
+          <th>Edytuj</th>
+          <th>Usuń</th>
+        </tr>
+         {% for job in jobs%}
+         <tr>
+            <th>{{job.job_name}}</th>
+            <th>{{job.description}}</th>
+            <th>Od: {{work_from}} Do: {{job.work_to}}</th>
+            <th><a href="{% url 'employee_job_update' employee.id job.id%}">Edytuj</a></th>
+            <th><a href="{% url 'employee_job_delete' employee.id job.id%}">Usuń</a></th>
+          </tr>
+          {% endfor%}
+      </table>
+
+
     <p><a href="{% url 'employee_profile_update' employee.id%}">Edytuj dane</a></p>
     <a href="{% url 'employee_add_language' employee.id%}"><p>Dodaj język </p> 
     <a href="{% url 'employee_add_job' employee.id%}"><p>Dodaj pracę</p></a>
-    
-    
-</body>
-</html>
+    <a href="{% url 'employee_add_target' employee.id%}"><p>Dodaj wymarzony zawód</p></a>
+    {% include 'footer.html'%}
+{%endblock%}
