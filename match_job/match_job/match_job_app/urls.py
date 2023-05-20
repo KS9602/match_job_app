@@ -68,5 +68,5 @@ urlpatterns = [
         "employer_profile/<int:pk>/add_target",
         AddEmployeeTargetJob.as_view(),
         name="employee_add_target",
-    )
+    ),
 ]

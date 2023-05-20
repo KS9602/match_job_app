@@ -61,6 +61,7 @@ class HomeView(TemplateView):
                 return context
         return context
 
+
 class ChoiceRoleView(TemplateView):
     template_name = "choice_role.html"
 
@@ -115,7 +116,8 @@ class LogoutView(View):
         logout(self.request)
         return redirect("home")
 
-@method_decorator(checking_role('employee'), name="dispatch")
+
+@method_decorator(checking_role("employee"), name="dispatch")
 class EmployeeProfile(LoginRequiredMixin, DetailView):
     template_name = "employee_profile.html"
     model = Employee
@@ -129,29 +131,18 @@ class EmployeeProfile(LoginRequiredMixin, DetailView):
         targets = EmployeeJobTarget.objects.filter(target_user=employee_user)
         if len(targets) > 0:
             targets = targets.last().target_name
-            targets = targets.split(',')
+            targets = targets.split(",")
 
-        context["employee_user"], context["jobs"], context["languages"],context['targets'] = (
-            employee_user,
-            jobs,
-            languages,
-            targets
-        )
+        (
+            context["employee_user"],
+            context["jobs"],
+            context["languages"],
+            context["targets"],
+        ) = (employee_user, jobs, languages, targets)
         return context
 
 
-class EmployerProfile(LoginRequiredMixin, DetailView):
-    template_name = "employer_profile.html"
-    model = Employer
-    login_url = "login"
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["employer"] = Employer.objects.get(id=self.kwargs["pk"])
-        return context
-
-
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
     template_name = "update_information_employee.html"
     login_url = "login"
@@ -167,9 +158,9 @@ class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         print(self.request.POST)
         return super().form_valid(form)
-    
 
-@method_decorator(checking_role('employee'), name="dispatch")
+
+@method_decorator(checking_role("employee"), name="dispatch")
 class AddLanguageView(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeLanguage
@@ -180,10 +171,10 @@ class AddLanguageView(LoginRequiredMixin, CreateView):
         pk = self.kwargs["pk"]
         url = reverse("employee_profile", kwargs={"pk": pk})
         return url
-    
+
     def get_form_kwargs(self) -> Dict[str, Any]:
         kargs = super().get_form_kwargs()
-        kargs['employee_user'] = self.request.user.employee
+        kargs["employee_user"] = self.request.user.employee
         return kargs
 
     def form_valid(self, form: CreateEmployeeLanguageForm) -> HttpResponse:
@@ -192,7 +183,8 @@ class AddLanguageView(LoginRequiredMixin, CreateView):
         form.instance.language_user = user
         return super().form_valid(form)
 
-@method_decorator(checking_role('employee'), name="dispatch")
+
+@method_decorator(checking_role("employee"), name="dispatch")
 class EditLanguageView(LoginRequiredMixin, UpdateView):
     template_name = "update_language.html"
     login_url = "login"
@@ -204,13 +196,13 @@ class EditLanguageView(LoginRequiredMixin, UpdateView):
         pk = self.kwargs["pk"]
         url = reverse("employee_profile", kwargs={"pk": pk})
         return url
-    
+
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> EmployeeLanguage:
         language = EmployeeLanguage.objects.get(id=self.kwargs["pk_lang"])
         return language
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class DeleteLanguageView(LoginRequiredMixin, DeleteView):
     login_url = "login"
     model = EmployeeLanguage
@@ -233,7 +225,7 @@ class DeleteLanguageView(LoginRequiredMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class AddJobView(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeJob
@@ -252,7 +244,7 @@ class AddJobView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class EditJobView(LoginRequiredMixin, UpdateView):
     template_name = "update_job.html"
     login_url = "login"
@@ -270,7 +262,7 @@ class EditJobView(LoginRequiredMixin, UpdateView):
         return job
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class DeleteJobView(LoginRequiredMixin, DeleteView):
     login_url = "login"
     model = EmployeeJob
@@ -293,7 +285,7 @@ class DeleteJobView(LoginRequiredMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class EditBaseInformationEmployerView(LoginRequiredMixin, TemplateView):
     template_name = ""
     login_url = "login"
@@ -302,7 +294,7 @@ class EditBaseInformationEmployerView(LoginRequiredMixin, TemplateView):
         return super().get_context_data(**kwargs)
 
 
-@method_decorator(checking_role('employee'), name="dispatch")
+@method_decorator(checking_role("employee"), name="dispatch")
 class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeJobTarget
@@ -320,3 +312,14 @@ class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
         form.instance.target_user = user
 
         return super().form_valid(form)
+
+
+class EmployerProfile(LoginRequiredMixin, DetailView):
+    template_name = "employer_profile.html"
+    model = Employer
+    login_url = "login"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["employer"] = Employer.objects.get(id=self.kwargs["pk"])
+        return context
