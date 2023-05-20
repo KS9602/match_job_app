@@ -1,21 +1,38 @@
 {%extends 'base.html'%}
-{% block title%} Dodaj poprzedni zawód{% endblock%}
+{% load static%}
+{% block extra_css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/employee_profile.css' %}"/>
+{% endblock%}
+{% block title%} Profil użytkownika{% endblock%}
 {% block body%}
-    <a href="{% url 'home'%}"><h1>Match Job</h1></a>
-    <h2 style="background-color: rgb(234, 54, 54);color:aliceblue">Profil Pracownika</h2>
-    
+    {% include 'navbar.html'%}
+    <hr>
+  <div class="employee_profile_box_01">
+    Profil Pracownika
+  </div>
+
     {%if messages%}
     {%for message in messages%}
         <p>{{message}}</p>
     {%endfor%}
     {% endif %}
 
-    <p>Imie: {{employee.name}}</p> 
-    <p>Nazwisko: {{employee.last_name}}</p>
-    <p> Dostepny od:{{employee.available_from}} do {{employee.available_to}}</p> 
 
+    <div class="employee_profile_box_02">
+      <div class="employee_profile_box_02_01">{{employee.name}} {{employee.last_name}}</div>
+      <img class="profile_img" src="{{employee.profile_pic.url}}">
+
+  </div>
+
+
+
+
+
+    <div class="employee_profile_box_03">
+    <p> Dostepny od:{{employee.available_from}} do {{employee.available_to}}</p> 
+  </div>
     {% if employee.profile_pic %}
-    <img src="{{employee.profile_pic.url}}" width="200">
+
     {% endif%}
     <table>
         <tr>

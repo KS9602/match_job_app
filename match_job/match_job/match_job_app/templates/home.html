@@ -1,12 +1,16 @@
 {%extends 'base.html'%}
+{% load static%}
+{% block extra_css%} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}"/>
+{% endblock %}
 {% block title%} Match Job {% endblock%}
 {% block body%}
     <header>
         {% include 'navbar.html'%}
+
     </header>
  <main>
     {% if uesr.employee%}
-    <p> xxx</p>
     {% endif%}
     {%if messages%}
         {%for message in messages%}
@@ -14,21 +18,30 @@
         {%endfor%}
     {% endif %}
     <div class="main_box_01">
-        <div class="inner_box_of_main_box_01" style="border:1px solid black;">
+        <div class="inner_box_of_main_box_01" >
             <h2>Szukam</h2>
-            <p>Pracy na wakacje</p>
-            <p>Pracownika na wakacje</p>
-            <a href="{% url 'registration_choice'%}"><p>Rejestracja</p></a>
+            <form method="post">
+                {% csrf_token%}
+                <input type="radio" name="job_choice" value="employee">
+                <label for="html">Pracy na wakacje</label><br>
+                <input type="radio" name="job_choice" value="employer">
+                <label for="css">Pracownika na wakacje</label><br>
+                <input type="submit" value="utwórz konto">
+            </form>
+
         </div>
     </div>
 
-
-
     <div class="main_box_02">
-        <h2>Jak to działa?</h2>
-        <div class="inner_box_of_main_box_02" style="border:1px solid black;">
+        <div class="inner_box_of_main_box_02_01">
+            Jak to działa?
+        </div>
+        <div class="inner_box_of_main_box_02_02">guzik</div>
+        <div class="inner_box_of_main_box_02_03" >
             <a href="{% url 'registration_choice'%}"><p>Rejestracja</p></a>
         </div>
+        <div class="inner_box_of_main_box_02_04">info</div>
+        <div class="inner_box_of_main_box_02_05">guzik</div>
     </div>
 
 

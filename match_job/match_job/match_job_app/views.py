@@ -60,10 +60,20 @@ class HomeView(TemplateView):
                 print
                 return context
         return context
+    
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        return super().get(request, *args, **kwargs)
+    
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        if self.request.POST.get('job_choice') == 'employee':
+            return redirect('home')                                         # zmienic linki
+        else:
+            return redirect('home')
 
 
 class ChoiceRoleView(TemplateView):
     template_name = "choice_role.html"
+
 
 
 class RegistrationEmployeeView(CreateView):

@@ -172,3 +172,9 @@ class AddEmployeeJobTarget(forms.ModelForm):
         target_name = self.cleaned_data["target_name"]
         target_name = ",".join(target_name)
         return target_name
+
+class ChoiceTypeOfEmployee(forms.Form):
+    choice_field = forms.ChoiceField(
+        choices=((1,'xxx'),(2,'zzz')),
+        widget  = forms.ChoiceField,
+    )
