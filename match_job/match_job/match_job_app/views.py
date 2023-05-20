@@ -1,4 +1,5 @@
 from typing import Any, Optional, Type, Union
+from django import http
 from django.db import models
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
@@ -27,6 +28,8 @@ from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from .decorators import checking_role
 
 
 def init_app(request):
@@ -57,7 +60,6 @@ class HomeView(TemplateView):
                 print
                 return context
         return context
-
 
 class ChoiceRoleView(TemplateView):
     template_name = "choice_role.html"
@@ -113,74 +115,35 @@ class LogoutView(View):
         logout(self.request)
         return redirect("home")
 
-
-class EmployeeProfile(DetailView):
-    template_name = "employee_profile.html"
-    model = Employee
-    context_object_name = "employee"
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        user = User.objects.get(id=self.kwargs["pk"])
-        context["employee"] = Employee.objects.get(user=user.id)
-        return context
-
-
-class EmployerProfile(DetailView):
-    template_name = "employer_profile.html"
-    model = Employer
-    context_object_name = "employer"
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        user = User.objects.get(id=self.kwargs["pk"])
-        context["employer"] = Employer.objects.get(user=user.id)
-        return context
-
-
-def VerifyUserProfile(
-    instance: Union[EmployeeProfile, EmployerProfile], model: models.Model
-) -> bool:
-    user = instance.request.user
-    try:
-        profile_user = model.objects.get(id=instance.kwargs["pk"])
-        if user == profile_user.user:
-            return True
-        return False
-    except ObjectDoesNotExist:
-        return False
-
-
-class EmployeeProfile(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class EmployeeProfile(LoginRequiredMixin, DetailView):
     template_name = "employee_profile.html"
     model = Employee
     login_url = "login"
-
-    def test_func(self) -> bool | None:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         employee_user = Employee.objects.get(pk=self.kwargs["pk"])
         jobs = EmployeeJob.objects.filter(job_user=employee_user)
         languages = EmployeeLanguage.objects.filter(language_user=employee_user)
-        context["employee_user"], context["jobs"], context["languages"] = (
+        targets = EmployeeJobTarget.objects.filter(target_user=employee_user)
+        if len(targets) > 0:
+            targets = targets.last().target_name
+            targets = targets.split(',')
+
+        context["employee_user"], context["jobs"], context["languages"],context['targets'] = (
             employee_user,
             jobs,
             languages,
+            targets
         )
         return context
 
 
-class EmployerProfile(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class EmployerProfile(LoginRequiredMixin, DetailView):
     template_name = "employer_profile.html"
     model = Employer
     login_url = "login"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employer)
-        return result
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -188,18 +151,13 @@ class EmployerProfile(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return context
 
 
-class EditBaseInformationEmployeeView(
-    LoginRequiredMixin, UserPassesTestMixin, UpdateView
-):
+@method_decorator(checking_role('employee'), name="dispatch")
+class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
     template_name = "update_information_employee.html"
     login_url = "login"
     model = Employee
     form_class = UpdateBaseInformationEmployeeForm
     pk_url_kwarg = "pk"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -209,16 +167,14 @@ class EditBaseInformationEmployeeView(
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         print(self.request.POST)
         return super().form_valid(form)
+    
 
-class AddLanguageView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class AddLanguageView(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeLanguage
     form_class = CreateEmployeeLanguageForm
     template_name = "add_language.html"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -235,20 +191,14 @@ class AddLanguageView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         user = Employee.objects.get(user=self.request.user)
         form.instance.language_user = user
         return super().form_valid(form)
-    
 
-
-
-class EditLanguageView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class EditLanguageView(LoginRequiredMixin, UpdateView):
     template_name = "update_language.html"
     login_url = "login"
     model = EmployeeLanguage
     form_class = UpdateLanguageEmployeeForm
     pk_url_kwarg = "pk_lang"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -260,15 +210,12 @@ class EditLanguageView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return language
 
 
-class DeleteLanguageView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class DeleteLanguageView(LoginRequiredMixin, DeleteView):
     login_url = "login"
     model = EmployeeLanguage
     context_object_name = "language"
     pk_url_kwarg = "pk_lang"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -286,15 +233,12 @@ class DeleteLanguageView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class AddJobView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class AddJobView(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeJob
     form_class = CreateEmployeeJobForm
     template_name = "add_job_history.html"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -308,16 +252,13 @@ class AddJobView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().form_valid(form)
 
 
-class EditJobView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class EditJobView(LoginRequiredMixin, UpdateView):
     template_name = "update_job.html"
     login_url = "login"
     model = EmployeeJob
     form_class = UpdateJobEmployeeForm
     pk_url_kwarg = "pk_job"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -329,15 +270,12 @@ class EditJobView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return job
 
 
-class DeleteJobView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class DeleteJobView(LoginRequiredMixin, DeleteView):
     login_url = "login"
     model = EmployeeJob
     context_object_name = "job"
     pk_url_kwarg = "pk_job"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -355,27 +293,21 @@ class DeleteJobView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-class EditBaseInformationEmployerView(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class EditBaseInformationEmployerView(LoginRequiredMixin, TemplateView):
     template_name = ""
     login_url = "login"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employer)
-        return result
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(**kwargs)
 
 
-class AddEmployeeTargetJob(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+@method_decorator(checking_role('employee'), name="dispatch")
+class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = EmployeeJobTarget
     form_class = AddEmployeeJobTarget
     template_name = "add_job_target.html"
-
-    def test_func(self) -> bool:
-        result = VerifyUserProfile(self, Employee)
-        return result
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -385,6 +317,6 @@ class AddEmployeeTargetJob(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def form_valid(self, form: AddEmployeeJobTarget) -> HttpResponse:
         form = AddEmployeeJobTarget(self.request.POST)
         user = Employee.objects.get(user=self.request.user)
-        form.instance.language_user = user
-        print(self.request.POST)
+        form.instance.target_user = user
+
         return super().form_valid(form)

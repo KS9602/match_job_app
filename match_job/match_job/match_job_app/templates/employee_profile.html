@@ -53,6 +53,10 @@
           {% endfor%}
       </table>
 
+      <h2>Chcę pracować jako</h2>
+      {% for target in targets%}
+      <ul>{{target}}</ul>
+      {% endfor%}
 
     <p><a href="{% url 'employee_profile_update' employee.id%}">Edytuj dane</a></p>
     <a href="{% url 'employee_add_language' employee.id%}"><p>Dodaj język </p> 
