@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from .constants import JOBS
 from datetime import datetime
-from string import ascii_letters
+from .validators import StringInputValidator
 
 
 class DateInput(forms.DateInput):
@@ -62,21 +62,18 @@ class UpdateBaseInformationEmployeeForm(forms.ModelForm):
 
     def clean_name(self) -> Dict[str, Any]:
         name = self.cleaned_data["name"]
-
-        for letter in name:
-            if letter not in ascii_letters or letter == " ":
-                raise ValidationError("Niedozwolone znaki")
+        string_validator = StringInputValidator(name)
+        string_validator.polish_letter()
+        string_validator.space_check()
         return name
 
     def clean_last_name(self) -> Dict[str, Any]:
-        name = self.cleaned_data["last_name"]
+        last_name = self.cleaned_data["last_name"]
+        string_validator = StringInputValidator(last_name)
+        string_validator.polish_letter()
+        string_validator.space_check()
+        return last_name
 
-        for letter in name:
-            if letter not in ascii_letters or letter == " ":
-                raise ValidationError("Niedozwolone znaki")
-        return name
-        """ZROBIC FUNKCJE KTORA BEDZIE SPRAWDZALA CZY ZNAKI TO LITERY + ĄĆ ITD. czy nie ma spacji i co tam sie wymysli
-        potem pododawac ta funkcje do cleanow typu imie,nazwisko,nazwa firmy itd"""
 
 
 class CreateEmployeeLanguageForm(forms.ModelForm):
