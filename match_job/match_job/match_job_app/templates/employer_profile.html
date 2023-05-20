@@ -9,8 +9,9 @@
     {%endfor%}
     {% endif %}
 
-    <p>Imie: {{employer.name}}</p> 
-    <p>Edytuj dane</p>
+    <div><a href="{% url 'employer_profile_update' employer.id %}">Edytuj dane</a></div>
+    <p>Imie: {{employer.company_name}}</p> 
+
     <p>Dodaj język</p>
     <p>Dodaj pracę</p>
     

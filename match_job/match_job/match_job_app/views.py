@@ -166,7 +166,6 @@ class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
         return url
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
-        print(self.request.POST)
         return super().form_valid(form)
 
 
@@ -293,16 +292,7 @@ class DeleteJobView(LoginRequiredMixin, DeleteView):
         success_url = self.get_success_url()
         self.object.delete()
         return HttpResponseRedirect(success_url)
-
-
-@method_decorator(checking_role("employee"), name="dispatch")
-class EditBaseInformationEmployerView(LoginRequiredMixin, TemplateView):
-    template_name = ""
-    login_url = "login"
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(**kwargs)
-
+    
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
@@ -323,7 +313,7 @@ class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
-
+@method_decorator(checking_role("employer"), name="dispatch")
 class EmployerProfile(LoginRequiredMixin, DetailView):
     template_name = "employer_profile.html"
     model = Employer
@@ -333,3 +323,17 @@ class EmployerProfile(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["employer"] = Employer.objects.get(id=self.kwargs["pk"])
         return context
+
+
+@method_decorator(checking_role("employer"), name="dispatch")
+class EditBaseInformationEmployerView(LoginRequiredMixin, UpdateView):
+    template_name = "update_information_employer.html"
+    login_url = "login"
+    model = Employer
+    form_class = UpdateBaseInformationEmployerForm
+    pk_url_kwarg = "pk"
+
+    def get_success_url(self) -> str:
+        pk = self.kwargs["pk"]
+        url = reverse("employer_profile", kwargs={"pk": pk})
+        return url

@@ -63,14 +63,14 @@ class UpdateBaseInformationEmployeeForm(forms.ModelForm):
     def clean_name(self) -> Dict[str, Any]:
         name = self.cleaned_data["name"]
         string_validator = StringInputValidator(name)
-        string_validator.polish_letter()
+        string_validator.only_polish_letter()
         string_validator.space_check()
         return name
 
     def clean_last_name(self) -> Dict[str, Any]:
         last_name = self.cleaned_data["last_name"]
         string_validator = StringInputValidator(last_name)
-        string_validator.polish_letter()
+        string_validator.only_polish_letter()
         string_validator.space_check()
         return last_name
 
@@ -178,3 +178,23 @@ class ChoiceTypeOfEmployee(forms.Form):
         choices=((1,'xxx'),(2,'zzz')),
         widget  = forms.ChoiceField,
     )
+
+
+
+
+class UpdateBaseInformationEmployerForm(forms.ModelForm):
+    company_name = forms.CharField(
+        max_length=100, label="Nazwa", widget=forms.TextInput(attrs={"size": "20"})
+    )
+    company_address = forms.CharField(
+        max_length=200, label="Adres", widget=forms.TextInput(attrs={"size": "20"})
+    )
+    company_description = forms.CharField(
+        max_length=600, label="Opis", widget=forms.TextInput(attrs={"size": "20"})
+    )
+
+    class Meta:
+        model = Employee
+        fields = ("company_name", "company_address", "company_description",)
+
+
