@@ -170,7 +170,7 @@ class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class AddLanguageView(LoginRequiredMixin, CreateView):
+class AddLanguageView(LoginRequiredMixin, CreateView):      # do poprawy! !!!!!!!!!!!!!!!!!!!!!!!!
     login_url = "login"
     model = EmployeeLanguage
     form_class = CreateEmployeeLanguageForm
@@ -194,11 +194,11 @@ class AddLanguageView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class EditLanguageView(LoginRequiredMixin, UpdateView):
+class EditLanguageView(LoginRequiredMixin, UpdateView):         # DO POPRAWY !!!!!!!!!!!!!!! 
     template_name = "update_language.html"
     login_url = "login"
     model = EmployeeLanguage
-    form_class = UpdateLanguageEmployeeForm
+    form_class = CreateEmployeeLanguageForm
     pk_url_kwarg = "pk_lang"
 
     def get_success_url(self) -> str:
@@ -209,6 +209,16 @@ class EditLanguageView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> EmployeeLanguage:
         language = EmployeeLanguage.objects.get(id=self.kwargs["pk_lang"])
         return language
+    
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs['employee_user'] = self.request.user.employee
+        return kwargs
+
+    # def form_valid(self, form: CreateEmployeeLanguageForm) -> HttpResponse:
+    #     form = CreateEmployeeLanguageForm(self.request.POST,pk_lang=self.kwargs['pk_lang'])
+    #     return super().form_valid(form)
+
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
@@ -258,7 +268,7 @@ class EditJobView(LoginRequiredMixin, UpdateView):
     template_name = "update_job.html"
     login_url = "login"
     model = EmployeeJob
-    form_class = UpdateJobEmployeeForm
+    form_class = CreateEmployeeJobForm
     pk_url_kwarg = "pk_job"
 
     def get_success_url(self) -> str:
@@ -341,7 +351,7 @@ class EditBaseInformationEmployerView(LoginRequiredMixin, UpdateView):
         return url
 
 @method_decorator(checking_role("employer"), name="dispatch")
-class AddJobPost(LoginRequiredMixin, CreateView):
+class AddJEmployerobPost(LoginRequiredMixin, CreateView):
     login_url = "login"
     model = JobPost
     form_class = CreateJobPostForm
@@ -357,3 +367,20 @@ class AddJobPost(LoginRequiredMixin, CreateView):
         user = Employer.objects.get(user=self.request.user)
         form.instance.employer = user
         return super().form_valid(form)
+    
+@method_decorator(checking_role("employer"), name="dispatch")
+class EditEmployerJobPost(LoginRequiredMixin,UpdateView):
+    login_url = 'login'
+    template_name = 'edit_job_post.html'
+    model = JobPost
+    form_class = CreateJobPostForm
+    pk_url_kwarg = 'pk_post'
+    
+    def get_success_url(self) -> str:
+        pk = self.kwargs["pk"]
+        url = reverse("employer_profile", kwargs={"pk": pk})
+        return url
+    
+    def get_object(self, queryset: QuerySet[Any] | None = ...) -> JobPost:
+        job_post = JobPost.objects.get(id=self.kwargs['pk_post'])
+        return job_post

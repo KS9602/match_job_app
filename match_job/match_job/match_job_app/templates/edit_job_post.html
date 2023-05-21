@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{% block title%} Dodaj poprzedni zawód{% endblock%}
+{% block body%}
+
+{%if messages%}
+{%for message in messages%}
+    <p>{{message}}</p>
+{%endfor%}
+{% endif %}
+
+    {% include 'navbar.html'%}
+    <form method="post" >
+        {% csrf_token%}
+    {% for field in form%}
+        {% if field.errors %}
+        <ul class="errorlist">
+            {% for error in field.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <hr>{{field.label}} {{field}}
+    {% endfor%}
+    <br>
+    <input type="submit">
+    </form>
+{% endblock%}

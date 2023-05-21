@@ -69,5 +69,6 @@ urlpatterns = [
         AddEmployeeTargetJob.as_view(),
         name="employee_add_target",
     ),
-    path("employer_profile/<int:pk>/add_job_post",AddJobPost.as_view(),name="employer_add_job_post")
+    path("employer_profile/<int:pk>/add_job_post",AddJEmployerobPost.as_view(),name="employer_add_job_post"),
+    path("employer_profile/<int:pk>/edit_job_post/<int:pk_post>",EditEmployerJobPost.as_view(),name="employer_edit_job_post")
 ]

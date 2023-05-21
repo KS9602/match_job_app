@@ -77,9 +77,9 @@ class UpdateBaseInformationEmployeeForm(forms.ModelForm):
 
 
 class CreateEmployeeLanguageForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs) -> None:
-        self.user = kwargs.pop("employee_user")
+    def __init__(self,employee_user, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.user = employee_user
 
     class Meta:
         model = EmployeeLanguage
@@ -94,45 +94,16 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
         return language_name
 
 
-class UpdateLanguageEmployeeForm(forms.ModelForm):
-    class Meta:
-        model = EmployeeLanguage
-        fields = (
-            "language_name",
-            "level",
-        )
+# class UpdateLanguageEmployeeForm(forms.ModelForm):
+#     class Meta:
+#         model = EmployeeLanguage
+#         fields = (
+#             "language_name",
+#             "level",
+#         )
 
 
 class CreateEmployeeJobForm(forms.ModelForm):
-    job_name = forms.CharField(
-        max_length=100, label="Stanowisko", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    description = forms.CharField(
-        max_length=200,
-        label="Opis",
-        widget=forms.TextInput(
-            attrs={"cols": 40, "row": 3, "style": "width:300px;height:100px"}
-        ),
-    )
-    work_from = forms.DateField(widget=DateInput())
-    work_to = forms.DateField(widget=DateInput())
-
-    class Meta:
-        model = EmployeeJob
-        fields = ("job_name", "description", "work_from", "work_to")
-
-    def clean_work_to(self) -> Dict[str, Any]:
-        work_from = self.cleaned_data["work_from"]
-        work_to = self.cleaned_data["work_to"]
-        if work_from > work_to:
-            raise ValidationError(
-                "Data rozpoczęcia musi być większa od daty zakończenia"
-            )
-        else:
-            return work_to
-
-
-class UpdateJobEmployeeForm(forms.ModelForm):
     job_name = forms.CharField(
         max_length=100, label="Stanowisko", widget=forms.TextInput(attrs={"size": "20"})
     )
