@@ -2,14 +2,13 @@
 {% block title%} Dodaj poprzedni zawód{% endblock%}
 {% block body%}
 
+{%if messages%}
+{%for message in messages%}
+    <p>{{message}}</p>
+{%endfor%}
+{% endif %}
+
     {% include 'navbar.html'%}
-
-    {%if messages%}
-    {%for message in messages%}
-        <p>{{message}}</p>
-    {%endfor%}
-    {% endif %}
-
     <form method="post" >
         {% csrf_token%}
     {% for field in form%}
@@ -22,6 +21,7 @@
         {% endif %}
     <hr>{{field.label}} {{field}}
     {% endfor%}
+    <br>
     <input type="submit">
     </form>
 {% endblock%}

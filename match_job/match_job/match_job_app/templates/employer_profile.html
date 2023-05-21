@@ -10,10 +10,28 @@
     {% endif %}
 
     <div><a href="{% url 'employer_profile_update' employer.id %}">Edytuj dane</a></div>
-    <p>Imie: {{employer.company_name}}</p> 
+    <div><a href="{% url 'employer_add_job_post' employer.id%}">dodaj propozycje</a></div>
 
-    <p>Dodaj język</p>
-    <p>Dodaj pracę</p>
-    
+
+          <ul>{{employer.company_name}}</ul>
+          <ul>{{employer.company_address}}</ul>
+          <ul>{{employer.company_description}}</ul>
+
+          <hr>
+
+          <table>
+            <tr>
+                <th>Tytuł</th>
+                <th>Opis</th>
+                <th>Wymagania</th>
+            </tr>
+            {% for post in job_posts%}
+            <tr>
+                <th>{{post.title}}</th>
+                <th>{{post.description}}</th>
+                <th>{{post.requirements}}</th>
+            </tr>
+            {%endfor%}
+          </table>
 
 {%endblock%}

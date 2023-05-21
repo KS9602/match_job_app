@@ -321,7 +321,9 @@ class EmployerProfile(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        user = Employer.objects.get(id=self.kwargs["pk"])
         context["employer"] = Employer.objects.get(id=self.kwargs["pk"])
+        context['job_posts'] = JobPost.objects.filter(employer=user)
         return context
 
 
@@ -337,3 +339,21 @@ class EditBaseInformationEmployerView(LoginRequiredMixin, UpdateView):
         pk = self.kwargs["pk"]
         url = reverse("employer_profile", kwargs={"pk": pk})
         return url
+
+@method_decorator(checking_role("employer"), name="dispatch")
+class AddJobPost(LoginRequiredMixin, CreateView):
+    login_url = "login"
+    model = JobPost
+    form_class = CreateJobPostForm
+    template_name = "add_job_post.html"
+
+    def get_success_url(self) -> str:
+        pk = self.kwargs["pk"]
+        url = reverse("employer_profile", kwargs={"pk": pk})
+        return url
+
+    def form_valid(self, form: CreateJobPostForm) -> HttpResponse:
+        form = CreateJobPostForm(self.request.POST)
+        user = Employer.objects.get(user=self.request.user)
+        form.instance.employer = user
+        return super().form_valid(form)

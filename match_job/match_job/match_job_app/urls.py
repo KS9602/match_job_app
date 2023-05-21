@@ -35,38 +35,39 @@ urlpatterns = [
         name="employer_profile_update",
     ),
     path(
-        "employer_profile/<int:pk>/add_language",
+        "employee_profile/<int:pk>/add_language",
         AddLanguageView.as_view(),
         name="employee_add_language",
     ),
     path(
-        "employer_profile/<int:pk>/update_language/<int:pk_lang>",
+        "employee_profile/<int:pk>/update_language/<int:pk_lang>",
         EditLanguageView.as_view(),
         name="employee_language_update",
     ),
     path(
-        "employer_profile/<int:pk>/delete_language/<int:pk_lang>",
+        "employee_profile/<int:pk>/delete_language/<int:pk_lang>",
         DeleteLanguageView.as_view(),
         name="employee_language_delete",
     ),
     path(
-        "employer_profile/<int:pk>/add_job",
+        "employee_profile/<int:pk>/add_job",
         AddJobView.as_view(),
         name="employee_add_job",
     ),
     path(
-        "employer_profile/<int:pk>/update_job/<int:pk_job>",
+        "employee_profile/<int:pk>/update_job/<int:pk_job>",
         EditJobView.as_view(),
         name="employee_job_update",
     ),
     path(
-        "employer_profile/<int:pk>/delete_job/<int:pk_job>",
+        "employee_profile/<int:pk>/delete_job/<int:pk_job>",
         DeleteJobView.as_view(),
         name="employee_job_delete",
     ),
     path(
-        "employer_profile/<int:pk>/add_target",
+        "employee_profile/<int:pk>/add_target",
         AddEmployeeTargetJob.as_view(),
         name="employee_add_target",
     ),
+    path("employer_profile/<int:pk>/add_job_post",AddJobPost.as_view(),name="employer_add_job_post")
 ]

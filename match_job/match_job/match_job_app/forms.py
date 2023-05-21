@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from .models import Employee, Employer, EmployeeJob, EmployeeLanguage, EmployeeJobTarget
+from .models import Employee, Employer, EmployeeJob, EmployeeLanguage, EmployeeJobTarget, JobPost
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -194,7 +194,11 @@ class UpdateBaseInformationEmployerForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Employee
+        model = Employer
         fields = ("company_name", "company_address", "company_description",)
 
 
+class CreateJobPostForm(forms.ModelForm):
+    class Meta:
+        model = JobPost
+        fields = ('title','description','requirements')
