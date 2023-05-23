@@ -97,13 +97,10 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
         model = EmployeeLanguage
         fields = ("language_name", "level")
 
-    def clean_language_name(self):
-        language_name = self.cleaned_data["language_name"]
-        user_languages = EmployeeLanguage.objects.filter(language_user=self.user)
-        languages_list = [language.language_name for language in user_languages]
-        if language_name in languages_list:
-            raise ValidationError("Ten język jest już wybrany")
-        return language_name
+class EditEmployeeLanguageForm(forms.ModelForm):
+    class Meta:
+        model = EmployeeLanguage
+        fields = ("language_name", "level")
 
 
 class CreateEmployeeJobForm(forms.ModelForm):
@@ -117,7 +114,6 @@ class CreateEmployeeJobForm(forms.ModelForm):
             attrs={"cols": 40, "row": 3, "style": "width:300px;height:100px"}
         ),
     )
-    job_expirience = forms.ChoiceField(choices=JOB_EXPIRIENCE,label='Doświadczenie')
     work_from = forms.DateField(widget=DateInput())
     work_to = forms.DateField(widget=DateInput())
 

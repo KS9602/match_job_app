@@ -22,8 +22,9 @@ class Employee(models.Model):
     available_from = models.CharField(max_length=50, null=True)
     available_to = models.CharField(max_length=50, null=True)
     profile_pic = models.ImageField(
+        default='default.jpeg',
         upload_to=employee_directory_path, null=True, blank=True,
-        validators=[FileExtensionValidator(['jpg','png'])]
+        validators=[FileExtensionValidator(['jpg','png','jpeg'])]
     )
     created = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -50,7 +51,7 @@ class EmployeeLanguage(models.Model):
 class EmployeeJob(models.Model):
     job_name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, null=True)
-    job_expirience = models.CharField(max_length=50,choices=JOB_EXPIRIENCE,null=True)
+    job_expirience = models.CharField(max_length=50,choices=JOB_EXPIRIENCE,default='1',null=True)
     work_from = models.CharField(max_length=50, null=True)
     work_to = models.CharField(max_length=50, null=True)
     job_user = models.ForeignKey(
@@ -63,7 +64,7 @@ class EmployeeJob(models.Model):
 
 
 class EmployeeJobTarget(models.Model):
-    target_name = models.CharField(max_length=50)
+    target_name = models.CharField(max_length=300)
     target_user = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name="target", null=True
     )

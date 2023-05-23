@@ -1,0 +1,12 @@
+
+
+<div class="center">
+	<form method="post" class="card">
+		{% csrf_token %}
+		<p>czy na pewno chcesz usunac "{{language}}"?</p>
+		<p class="form-buttons">
+			<input type="submit" value="Delete">
+			<a href="{% url 'employee_profile' job.job_user.id%}" >Cancel</a>
+		</p>
+	</form>
+</div>

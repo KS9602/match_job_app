@@ -21,9 +21,16 @@
     margin-left: 20px;
 }
 
+.inner_box_of_main_box_02_05_01{
+    float: left;
+}
 
-
-
+.inner_box_of_main_box_02_05_02{
+    float: left;
+}
+.inner_box_of_main_box_02_05_03{
+    clear: both;
+}
 
 .main_box_02 {
 

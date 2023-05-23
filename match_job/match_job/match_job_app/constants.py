@@ -51,11 +51,12 @@ LANGUAGE_CHOICES = (
 
 
 LANGUAGE_LEVEL_CHOICES = (
-    ("Master", "Master"),
-    ("Fluent", "Fluent"),
-    ("Advanced", "Advanced"),
-    ("Intermediate", "Intermediate"),
-    ("Beginner", "Beginner"),
+    ("C1", "C1"),
+    ("C2", "C2"),
+    ("B1", "B1"),
+    ("B2", "B2"),
+    ("A1", "A1"),
+    ("A2","A2")
 )
 
 
@@ -118,9 +119,10 @@ JOBS = (
 
 
 JOB_EXPIRIENCE = (
-    (1,'Mniej niż sześć miesięcy'),
-    (2,'Rok'),
-    (3,'Rok - 3 lata'),
-    (4,'3 lata - 5 lat'),
-    (5,'Powyżej 5 lat'),
+    ('1','Mniej niż sześć miesięcy'),
+    ('2','Rok'),
+    ('3','Rok - 3 lata'),
+    ('4','3 lata - 5 lat'),
+    ('5','Powyżej 5 lat'),
 )
+
