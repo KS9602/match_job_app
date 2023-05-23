@@ -78,8 +78,9 @@ class Employer(models.Model):
     company_description = models.TextField(null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
     company_pic = models.ImageField(
+        default='default.jpeg',
         upload_to=employer_directory_path, blank=True, null=True,
-        validators=[FileExtensionValidator(['jpg','png'])]  
+        validators=[FileExtensionValidator(['jpg','png','jpeg'])]  
     )
 
     def __str__(self) -> str:

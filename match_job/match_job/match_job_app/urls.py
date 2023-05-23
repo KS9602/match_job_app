@@ -80,6 +80,7 @@ urlpatterns = [
         name="employer_edit_job_post",
     ),
     path("employee_public_profile/<int:pk>",PublicEmployeeProfileView.as_view(),name="employee_public_profile"),
-    path("show_employee",ShowEmployeesView.as_view(),name="show_employee"),
+    path("employer_public_profile/<int:pk>",PublicEmployerProfileView.as_view(),name="employer_public_profile"),
+    path("show_employees/",ShowEmployeesView.as_view(),name="show_employees")
 
 ]

@@ -5,14 +5,16 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DetailView,
+    ListView,
 )
-from .forms import *
-from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from .decorators import checking_role
+
+from .forms import UpdateBaseInformationEmployerForm, CreateJobPostForm
+from .models import Employer,JobPost,Employee
 
 
 @method_decorator(checking_role("employer"), name="dispatch")
@@ -79,3 +81,22 @@ class EditEmployerJobPostView(LoginRequiredMixin, UpdateView):
         job_post = JobPost.objects.get(id=self.kwargs["pk_post"])
         return job_post
     
+
+class PublicEmployerProfileView(LoginRequiredMixin, DetailView):
+    login_url = "login"
+    template_name = 'public_employer_profile.html'
+    context_object_name = 'employer'
+    model = Employer
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        user = Employer.objects.get(id=self.kwargs['pk'])
+        context['employer'] = user
+        context['job_posts'] = JobPost.objects.filter(employer=user)
+
+        return context
+    
+
+
+
+

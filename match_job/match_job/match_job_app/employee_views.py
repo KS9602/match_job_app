@@ -9,14 +9,25 @@ from django.views.generic import (
     DetailView,
     ListView,
 )
-from .forms import *
-from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from .decorators import checking_role
-
+from .forms import (
+    EmployeeJobTarget,
+    UpdateBaseInformationEmployeeForm,
+    CreateEmployeeLanguageForm,
+    EditEmployeeLanguageForm,
+    CreateEmployeeJobForm,
+    AddEmployeeJobTarget
+    )
+from .models import (
+    Employee,
+    EmployeeJob,
+    EmployeeLanguage,
+    EmployeeJobTarget
+    )
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EmployeeProfile(LoginRequiredMixin, DetailView):
@@ -208,10 +219,11 @@ class AddEmployeeTargetJobView(LoginRequiredMixin, CreateView):
 
 class ShowEmployeesView(LoginRequiredMixin,ListView):
     login_url = "login"
-    template_name = "show_employee.html"
+    template_name = "show_employees.html"
     context_object_name = 'employees'
     paginate_by = 6
     queryset = Employee.objects.all()
+
 
 
 class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
@@ -238,3 +250,4 @@ class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
             context["targets"],
         ) = (employee, jobs, languages, targets)
         return context
+    

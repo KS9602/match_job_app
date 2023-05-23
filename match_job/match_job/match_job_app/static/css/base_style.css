@@ -1,5 +1,6 @@
 body{
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: antiquewhite;
 }
 
 a {
@@ -24,6 +25,7 @@ a {
 .page_div{
     position: relative;
     min-height: 100vh;
+
 }
 
 .login{

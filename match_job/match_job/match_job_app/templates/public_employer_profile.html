@@ -1,0 +1,63 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/public_employer_profile.css' %}"/>
+{% endblock %}
+{% block title%} Pracodawca {% endblock%}
+{% block body%}
+
+    {% include 'navbar.html'%}
+<div class="main_box_01">
+    <div class="main_box_01_01">
+    Profil pracodwacy
+    </div>
+</div>
+
+
+<div class="main_box_02">
+    <div class="main_box_02_01">
+        {{employer.company_name}} {{employer.company_address}}
+    </div>
+    <div class="main_box_02_02">
+    <img class="profile_img" src="{{employer.company_pic.url}}"><br>
+    {{company_description}}
+    </div>
+    <div class="main_box_02_03">
+        <div class="main_box_02_03_01">
+            Kontakt
+        </div>
+        <div class="main_box_02_03_02">
+            Pass
+        </div>
+        <div class="main_box_02_03_03">
+            Nie pokazuj
+        </div>
+    </div>
+</div>
+
+
+<div class="main_box_03">
+
+
+    <div class="main_box_03_01">
+        Posty
+    </div>
+    <div class="main_box_03_table">
+        <table>
+            <tr>
+                <th>title</th>
+                <th>description</th>
+                <th>requirements</th>
+            </tr>
+            {% for job in job_posts%}
+            <tr>
+                <th>{{job.title}}</th>
+                <th>{{job.description}}</th>
+                <th>{{job.requirements}}</th>
+            </tr>
+            {% endfor%}
+        </table>
+    </div>
+
+{% endblock%}
+

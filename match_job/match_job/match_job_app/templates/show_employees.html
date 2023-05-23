@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/show_employees.css' %}"/>
+{% endblock %}
+{% block title%} Przeglądaj pracowników {% endblock%}
+{% block body%}
+
+    {% include 'navbar.html'%}
+
+    <div class="main_box_01">
+        <div class="main_box_01_01">
+        {% for employee in employees%}
+            <div class="inner_box">
+                <a href="{% url 'employee_public_profile' employee.id%}">
+                    <img class="profile_img" src="{{employee.profile_pic.url}}">
+                    {{employee.name}}  {{employee.last_name}}<br>
+                    {{employee.available_from}} {{employee.available_to}} <br>
+                    {{employee.target.last.target_name}} <br>
+                </a> 
+            </div>
+            
+            {%if forloop.counter == 3%}
+        </div>
+        <div class="main_box_01_02" >
+        <hr>
+            {%endif%}
+        {% endfor%}
+        </div>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+{% include 'footer.html'%}
+{% endblock%}
+
