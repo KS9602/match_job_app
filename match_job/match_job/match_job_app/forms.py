@@ -1,12 +1,19 @@
 from typing import Any, Dict
-from .models import Employee, Employer, EmployeeJob, EmployeeLanguage, EmployeeJobTarget, JobPost
+from .models import (
+    Employee,
+    Employer,
+    EmployeeJob,
+    EmployeeLanguage,
+    EmployeeJobTarget,
+    JobPost,
+)
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from .constants import JOBS
+from .constants import JOBS,JOB_EXPIRIENCE
 from datetime import datetime
-from .validators import StringInputValidator
+from .validators import StringInputValidator,FileInputValidator
 
 
 class DateInput(forms.DateInput):
@@ -73,11 +80,16 @@ class UpdateBaseInformationEmployeeForm(forms.ModelForm):
         string_validator.only_polish_letter()
         string_validator.space_check()
         return last_name
-
+    
+    def clean_profile_pic(self):
+        self.profile_pic = self.cleaned_data['profile_pic']
+        file_validator = FileInputValidator(self.profile_pic)
+        file_validator.allowed_size(10)
+        return self.profile_pic
 
 
 class CreateEmployeeLanguageForm(forms.ModelForm):
-    def __init__(self,employee_user, *args, **kwargs) -> None:
+    def __init__(self, employee_user, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.user = employee_user
 
@@ -94,15 +106,6 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
         return language_name
 
 
-# class UpdateLanguageEmployeeForm(forms.ModelForm):
-#     class Meta:
-#         model = EmployeeLanguage
-#         fields = (
-#             "language_name",
-#             "level",
-#         )
-
-
 class CreateEmployeeJobForm(forms.ModelForm):
     job_name = forms.CharField(
         max_length=100, label="Stanowisko", widget=forms.TextInput(attrs={"size": "20"})
@@ -114,12 +117,13 @@ class CreateEmployeeJobForm(forms.ModelForm):
             attrs={"cols": 40, "row": 3, "style": "width:300px;height:100px"}
         ),
     )
+    job_expirience = forms.ChoiceField(choices=JOB_EXPIRIENCE,label='Doświadczenie')
     work_from = forms.DateField(widget=DateInput())
     work_to = forms.DateField(widget=DateInput())
 
     class Meta:
         model = EmployeeJob
-        fields = ("job_name", "description", "work_from", "work_to")
+        fields = ("job_name", "description",'job_expirience', "work_from", "work_to")
 
     def clean_work_to(self) -> Dict[str, Any]:
         work_from = self.cleaned_data["work_from"]
@@ -144,13 +148,14 @@ class AddEmployeeJobTarget(forms.ModelForm):
         target_name = ",".join(target_name)
         return target_name
 
-class ChoiceTypeOfEmployee(forms.Form):
+
+class ChoiceTypeOfEmployee(
+    forms.Form
+):  # do zmiany jak zostanie poprawiny front home (formularz do pracy na wakcje)
     choice_field = forms.ChoiceField(
-        choices=((1,'xxx'),(2,'zzz')),
-        widget  = forms.ChoiceField,
+        choices=((1, "xxx"), (2, "zzz")),
+        widget=forms.ChoiceField,
     )
-
-
 
 
 class UpdateBaseInformationEmployerForm(forms.ModelForm):
@@ -163,13 +168,40 @@ class UpdateBaseInformationEmployerForm(forms.ModelForm):
     company_description = forms.CharField(
         max_length=600, label="Opis", widget=forms.TextInput(attrs={"size": "20"})
     )
-
+    company_pic = forms.FileField(label='Logo')
     class Meta:
         model = Employer
-        fields = ("company_name", "company_address", "company_description",)
+        fields = (
+            "company_name",
+            "company_address",
+            "company_description",
+            "company_pic"
+        )
+
+    def clean_company_pic(self):
+        self.company_pic = self.cleaned_data['company_pic']
+        file_validator = FileInputValidator(self.company_pic)
+        file_validator.allowed_size(10)
+        return self.company_pic
 
 
 class CreateJobPostForm(forms.ModelForm):
+    title = forms.CharField(
+        max_length=100,
+        label="Tytuł ogłoszenia",
+        widget=forms.TextInput(attrs={"size": "20"}),
+    )
+    description = forms.CharField(
+        max_length=600,
+        label="Opis",
+        widget=forms.TextInput(attrs={"style": "width:300px;height:100px"}),
+    )
+    requirements = forms.CharField(
+        max_length=600,
+        label="Wymagania",
+        widget=forms.TextInput(attrs={"style": "width:300px;height:100px"}),
+    )
+
     class Meta:
         model = JobPost
-        fields = ('title','description','requirements')
+        fields = ("title", "description", "requirements")

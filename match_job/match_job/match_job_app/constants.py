@@ -115,3 +115,12 @@ JOBS = (
     ("Filmowiec", "Filmowiec"),
     ("Mechanik lotniczy", "Mechanik lotniczy"),
 )
+
+
+JOB_EXPIRIENCE = (
+    (1,'Mniej niż sześć miesięcy'),
+    (2,'Rok'),
+    (3,'Rok - 3 lata'),
+    (4,'3 lata - 5 lat'),
+    (5,'Powyżej 5 lat'),
+)

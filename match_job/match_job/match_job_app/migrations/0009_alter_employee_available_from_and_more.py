@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
             field=models.ImageField(
                 blank=True,
                 null=True,
-                upload_to=match_job_app.models.user_directory_path,
+                upload_to=match_job_app.models.employee_directory_path,
             ),
         ),
         migrations.AlterField(

@@ -1,0 +1,96 @@
+.main_box_01_01{
+    background-color: rgb(212, 48, 48);
+    color: whitesmoke;
+    font-size: 25px;
+    padding-left: 10px;
+}
+
+.main_box_02{
+    margin-left: 20px;
+    float: left;
+}
+.main_box_02_01{
+    font-size: 25px;
+    margin: 5px 5px 5px 50px;
+}
+.main_box_02_02{
+    width: 250px;
+    height: 300px;
+}
+.profile_img{
+    width: 250px;
+    height: 300px;
+
+}
+
+.main_box_02_03{
+    margin-top: 5px;
+    width: 250px;
+}
+.main_box_02_03_01{
+    text-align: center;
+    background-color: rgb(212, 48, 48);
+    color: whitesmoke;
+    font-size: 25px;
+    padding: 3px;
+}
+.main_box_02_03_02{
+    margin-top: 5px;
+    text-align: center;
+    background-color: rgb(0, 0, 0);
+    color: whitesmoke;
+    font-size: 25px;
+    padding: 3px;
+}
+.main_box_02_03_03{
+    margin-top: 5px;
+    text-align: center;
+    background-color: rgb(144, 144, 144);
+    font-size: 25px;
+    padding: 3px;
+}
+
+.main_box_03{
+    margin-left: 220px;
+    margin-top: 5px;
+    float: left;
+}
+
+.main_box_03_01{
+    font-size: 25px;
+    padding: 3px;
+}
+
+
+.main_box_03_04 {
+    font-size: 25px;
+    padding: 3px;
+}
+
+.main_box_03_06{
+    font-size: 25px;
+    padding: 3px;
+}
+.main_box_03_table{
+    background-color: rgb(231, 223, 213);
+    text-align: center;
+}
+
+
+
+.main_box_04{
+    margin-left: 920px;
+    margin-top: 5px;
+ 
+}
+
+.main_box_04_01{
+    font-size: 25px;
+    padding: 3px;
+}
+.main_box_04_02{
+    background-color: rgb(231, 223, 213);
+    text-align: center;
+    width: 250px;
+
+}

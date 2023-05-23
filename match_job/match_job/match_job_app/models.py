@@ -1,12 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .constants import LANGUAGE_CHOICES, LANGUAGE_LEVEL_CHOICES
+from django.core.validators import FileExtensionValidator
+from .constants import LANGUAGE_CHOICES, LANGUAGE_LEVEL_CHOICES, JOB_EXPIRIENCE
 
 
-def user_directory_path(instance, filename):
-    user = instance.user.id
+def employee_directory_path(instance, filename):
+    user = instance.user
     file = filename
-    return f"user_{user}/{file}"
+    return f"employee_{user}/{file}"
+
+def employer_directory_path(instance, filename):
+    user = instance.user
+    file = filename
+    return f"employer_{user}/{file}"
 
 
 class Employee(models.Model):
@@ -16,9 +22,10 @@ class Employee(models.Model):
     available_from = models.CharField(max_length=50, null=True)
     available_to = models.CharField(max_length=50, null=True)
     profile_pic = models.ImageField(
-        upload_to=user_directory_path, null=True, blank=True
+        upload_to=employee_directory_path, null=True, blank=True,
+        validators=[FileExtensionValidator(['jpg','png'])]
     )
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.name} {self.last_name}"
@@ -34,7 +41,7 @@ class EmployeeLanguage(models.Model):
     language_user = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name="language", null=True
     )
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.language_name}"
@@ -43,12 +50,13 @@ class EmployeeLanguage(models.Model):
 class EmployeeJob(models.Model):
     job_name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, null=True)
+    job_expirience = models.CharField(max_length=50,choices=JOB_EXPIRIENCE,null=True)
     work_from = models.CharField(max_length=50, null=True)
     work_to = models.CharField(max_length=50, null=True)
     job_user = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name="job", null=True
     )
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self) -> str:
         return f"{self.job_name}"
@@ -59,28 +67,30 @@ class EmployeeJobTarget(models.Model):
     target_user = models.ForeignKey(
         Employee, on_delete=models.CASCADE, related_name="target", null=True
     )
-    created = models.DateTimeField(auto_now_add=True,null=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
 
 class Employer(models.Model):
-
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="employer")
-    company_name = models.CharField(max_length=100,null=True)
-    company_address = models.CharField(max_length=200,null=True)
+    company_name = models.CharField(max_length=100, null=True)
+    company_address = models.CharField(max_length=200, null=True)
     company_description = models.TextField(null=True)
-    created = models.DateTimeField(auto_now_add=True,null=True)
-    #company_logo = models.ImageField(upload_to='logos/', blank=True, null=True)
-    
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    company_pic = models.ImageField(
+        upload_to=employer_directory_path, blank=True, null=True,
+        validators=[FileExtensionValidator(['jpg','png'])]  
+    )
+
     def __str__(self) -> str:
         return f"{self.company_name}"
-    
+
 
 class JobPost(models.Model):
-    title = models.CharField(max_length=100,null=True)
+    title = models.CharField(max_length=100, null=True)
     description = models.TextField(null=True)
     requirements = models.TextField(null=True)
-    created = models.DateTimeField(auto_now_add=True,null=True)
-    employer = models.ForeignKey('Employer', on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, null=True)
+    employer = models.ForeignKey("Employer", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

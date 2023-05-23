@@ -22,7 +22,7 @@ urlpatterns = [
         "employee_profile/<int:pk>", EmployeeProfile.as_view(), name="employee_profile"
     ),
     path(
-        "employer_profile/<int:pk>", EmployerProfile.as_view(), name="employer_profile"
+        "employer_profile/<int:pk>", EmployerProfileView.as_view(), name="employer_profile"
     ),
     path(
         "employee_profile/<int:pk>/update_information",
@@ -66,9 +66,20 @@ urlpatterns = [
     ),
     path(
         "employee_profile/<int:pk>/add_target",
-        AddEmployeeTargetJob.as_view(),
+        AddEmployeeTargetJobView.as_view(),
         name="employee_add_target",
     ),
-    path("employer_profile/<int:pk>/add_job_post",AddJEmployerobPost.as_view(),name="employer_add_job_post"),
-    path("employer_profile/<int:pk>/edit_job_post/<int:pk_post>",EditEmployerJobPost.as_view(),name="employer_edit_job_post")
+    path(
+        "employer_profile/<int:pk>/add_job_post",
+        AddJEmployerobPostView.as_view(),
+        name="employer_add_job_post",
+    ),
+    path(
+        "employer_profile/<int:pk>/edit_job_post/<int:pk_post>",
+        EditEmployerJobPostView.as_view(),
+        name="employer_edit_job_post",
+    ),
+    path("employee_public_profile/<int:pk>",PublicEmployeeProfileView.as_view(),name="employee_public_profile"),
+    path("show_employee",ShowEmployeesView.as_view(),name="show_employee"),
+
 ]

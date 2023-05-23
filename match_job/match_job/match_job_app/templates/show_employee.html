@@ -1,0 +1,36 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/show_employee.css' %}"/>
+{% endblock %}
+{% block title%} Przeglądaj pracowników{% endblock%}
+{% block body%}
+
+    {% include 'navbar.html'%}
+<div class="main_box_01">
+    {% for employee in employees%}
+    <img class="profile_img" src="{{employee.profile_pic.url}}"><br>
+    {{employee.name}} {{employee.last_name}}
+    {%endfor%}
+</div>
+
+<div class="main_box_02">
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock%}

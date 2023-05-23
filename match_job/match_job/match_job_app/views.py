@@ -60,20 +60,19 @@ class HomeView(TemplateView):
                 print
                 return context
         return context
-    
+
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         return super().get(request, *args, **kwargs)
-    
+
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
-        if self.request.POST.get('job_choice') == 'employee':
-            return redirect('home')                                         # zmienic linki
+        if self.request.POST.get("job_choice") == "employee":
+            return redirect("home")  # zmienic linki
         else:
-            return redirect('home')
+            return redirect("home")
 
 
 class ChoiceRoleView(TemplateView):
     template_name = "choice_role.html"
-
 
 
 class RegistrationEmployeeView(CreateView):
@@ -129,9 +128,9 @@ class LogoutView(View):
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EmployeeProfile(LoginRequiredMixin, DetailView):
+    login_url = "login"
     template_name = "employee_profile.html"
     model = Employee
-    login_url = "login"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -154,11 +153,11 @@ class EmployeeProfile(LoginRequiredMixin, DetailView):
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
-    template_name = "update_information_employee.html"
     login_url = "login"
+    template_name = "update_information_employee.html"
+    pk_url_kwarg = "pk"
     model = Employee
     form_class = UpdateBaseInformationEmployeeForm
-    pk_url_kwarg = "pk"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -170,11 +169,11 @@ class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class AddLanguageView(LoginRequiredMixin, CreateView):      # do poprawy! !!!!!!!!!!!!!!!!!!!!!!!!
+class AddLanguageView(LoginRequiredMixin, CreateView): 
     login_url = "login"
+    template_name = "add_language.html"
     model = EmployeeLanguage
     form_class = CreateEmployeeLanguageForm
-    template_name = "add_language.html"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -194,12 +193,12 @@ class AddLanguageView(LoginRequiredMixin, CreateView):      # do poprawy! !!!!!!
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class EditLanguageView(LoginRequiredMixin, UpdateView):         # DO POPRAWY !!!!!!!!!!!!!!! 
-    template_name = "update_language.html"
+class EditLanguageView(LoginRequiredMixin, UpdateView): 
     login_url = "login"
+    template_name = "update_language.html"
+    pk_url_kwarg = "pk_lang"
     model = EmployeeLanguage
     form_class = CreateEmployeeLanguageForm
-    pk_url_kwarg = "pk_lang"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -209,24 +208,19 @@ class EditLanguageView(LoginRequiredMixin, UpdateView):         # DO POPRAWY !!!
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> EmployeeLanguage:
         language = EmployeeLanguage.objects.get(id=self.kwargs["pk_lang"])
         return language
-    
+
     def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
-        kwargs['employee_user'] = self.request.user.employee
+        kwargs["employee_user"] = self.request.user.employee
         return kwargs
-
-    # def form_valid(self, form: CreateEmployeeLanguageForm) -> HttpResponse:
-    #     form = CreateEmployeeLanguageForm(self.request.POST,pk_lang=self.kwargs['pk_lang'])
-    #     return super().form_valid(form)
-
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class DeleteLanguageView(LoginRequiredMixin, DeleteView):
     login_url = "login"
-    model = EmployeeLanguage
     context_object_name = "language"
     pk_url_kwarg = "pk_lang"
+    model = EmployeeLanguage
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -246,10 +240,10 @@ class DeleteLanguageView(LoginRequiredMixin, DeleteView):
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class AddJobView(LoginRequiredMixin, CreateView):
+    template_name = "add_job_history.html"  
     login_url = "login"
     model = EmployeeJob
     form_class = CreateEmployeeJobForm
-    template_name = "add_job_history.html"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -265,11 +259,11 @@ class AddJobView(LoginRequiredMixin, CreateView):
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EditJobView(LoginRequiredMixin, UpdateView):
+    login_url = "login"  
     template_name = "update_job.html"
-    login_url = "login"
+    pk_url_kwarg = "pk_job"
     model = EmployeeJob
     form_class = CreateEmployeeJobForm
-    pk_url_kwarg = "pk_job"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -284,9 +278,9 @@ class EditJobView(LoginRequiredMixin, UpdateView):
 @method_decorator(checking_role("employee"), name="dispatch")
 class DeleteJobView(LoginRequiredMixin, DeleteView):
     login_url = "login"
-    model = EmployeeJob
     context_object_name = "job"
     pk_url_kwarg = "pk_job"
+    model = EmployeeJob
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -302,14 +296,14 @@ class DeleteJobView(LoginRequiredMixin, DeleteView):
         success_url = self.get_success_url()
         self.object.delete()
         return HttpResponseRedirect(success_url)
-    
+
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
+class AddEmployeeTargetJobView(LoginRequiredMixin, CreateView):
     login_url = "login"
+    template_name = "add_job_target.html"
     model = EmployeeJobTarget
     form_class = AddEmployeeJobTarget
-    template_name = "add_job_target.html"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -323,39 +317,41 @@ class AddEmployeeTargetJob(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
+
 @method_decorator(checking_role("employer"), name="dispatch")
-class EmployerProfile(LoginRequiredMixin, DetailView):
+class EmployerProfileView(LoginRequiredMixin, DetailView):
+    login_url = "login"    
     template_name = "employer_profile.html"
     model = Employer
-    login_url = "login"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         user = Employer.objects.get(id=self.kwargs["pk"])
         context["employer"] = Employer.objects.get(id=self.kwargs["pk"])
-        context['job_posts'] = JobPost.objects.filter(employer=user)
+        context["job_posts"] = JobPost.objects.filter(employer=user)
         return context
 
 
 @method_decorator(checking_role("employer"), name="dispatch")
 class EditBaseInformationEmployerView(LoginRequiredMixin, UpdateView):
-    template_name = "update_information_employer.html"
     login_url = "login"
+    template_name = "update_information_employer.html"
+    pk_url_kwarg = "pk"
     model = Employer
     form_class = UpdateBaseInformationEmployerForm
-    pk_url_kwarg = "pk"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
         url = reverse("employer_profile", kwargs={"pk": pk})
         return url
 
+
 @method_decorator(checking_role("employer"), name="dispatch")
-class AddJEmployerobPost(LoginRequiredMixin, CreateView):
+class AddJEmployerobPostView(LoginRequiredMixin, CreateView):
     login_url = "login"
+    template_name = "add_job_post.html"
     model = JobPost
     form_class = CreateJobPostForm
-    template_name = "add_job_post.html"
 
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
@@ -367,20 +363,55 @@ class AddJEmployerobPost(LoginRequiredMixin, CreateView):
         user = Employer.objects.get(user=self.request.user)
         form.instance.employer = user
         return super().form_valid(form)
-    
+
+
 @method_decorator(checking_role("employer"), name="dispatch")
-class EditEmployerJobPost(LoginRequiredMixin,UpdateView):
-    login_url = 'login'
-    template_name = 'edit_job_post.html'
+class EditEmployerJobPostView(LoginRequiredMixin, UpdateView):
+    login_url = "login"
+    template_name = "edit_job_post.html"
+    pk_url_kwarg = "pk_post"
     model = JobPost
     form_class = CreateJobPostForm
-    pk_url_kwarg = 'pk_post'
-    
+
     def get_success_url(self) -> str:
         pk = self.kwargs["pk"]
         url = reverse("employer_profile", kwargs={"pk": pk})
         return url
-    
+
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> JobPost:
-        job_post = JobPost.objects.get(id=self.kwargs['pk_post'])
+        job_post = JobPost.objects.get(id=self.kwargs["pk_post"])
         return job_post
+    
+
+class ShowEmployeesView(LoginRequiredMixin,ListView):
+    login_url = "login"
+    template_name = "show_employee.html"
+    context_object_name = 'employees'
+    paginate_by = 6
+    queryset = Employee.objects.all()
+
+
+class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
+    login_url = "login"
+    template_name = 'public_employee_profile.html'
+    context_object_name = 'employee'
+    model = Employee
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        employee = Employee.objects.get(pk=self.kwargs["pk"])
+        jobs = EmployeeJob.objects.filter(job_user=employee)
+        languages = EmployeeLanguage.objects.filter(language_user=employee)
+        targets = EmployeeJobTarget.objects.filter(target_user=employee)
+
+        if len(targets) > 0:
+            targets = targets.last().target_name
+            targets = targets.split(",")
+
+        (
+            context["employee"],
+            context["jobs"],
+            context["languages"],
+            context["targets"],
+        ) = (employee, jobs, languages, targets)
+        return context

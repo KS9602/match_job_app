@@ -11,8 +11,8 @@
 
     <div><a href="{% url 'employer_profile_update' employer.id %}">Edytuj dane</a></div>
     <div><a href="{% url 'employer_add_job_post' employer.id%}">dodaj propozycje</a></div>
-
-
+    <hr>
+    <img class="profile_img" src="{{employer.company_pic.url}}" width="200px">
           <ul>{{employer.company_name}}</ul>
           <ul>{{employer.company_address}}</ul>
           <ul>{{employer.company_description}}</ul>

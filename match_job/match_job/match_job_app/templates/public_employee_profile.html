@@ -1,0 +1,99 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%} 
+<link rel="stylesheet" type="text/css" href="{% static 'css/public_employee_profile.css' %}"/>
+{% endblock %}
+{% block title%} Przeglądaj pracowników{% endblock%}
+{% block body%}
+
+    {% include 'navbar.html'%}
+<div class="main_box_01">
+    <div class="main_box_01_01">
+    profil pracownika
+    </div>
+</div>
+
+
+<div class="main_box_02">
+    <div class="main_box_02_01">
+        {{employee.name}} {{employee.last_name}}
+    </div>
+    <div class="main_box_02_02">
+    <img class="profile_img" src="{{employee.profile_pic.url}}"><br>
+    </div>
+    <div class="main_box_02_03">
+        <div class="main_box_02_03_01">
+            Kontakt
+        </div>
+        <div class="main_box_02_03_02">
+            Pass
+        </div>
+        <div class="main_box_02_03_03">
+            Nie pokazuj
+        </div>
+    </div>
+</div>
+
+
+<div class="main_box_03">
+
+
+    <div class="main_box_03_01">
+        Chcę pracować jako
+    </div>
+    <div class="main_box_03_table">
+        <table>
+            <tr>
+                <th>Zawód</th>
+                <th>Doswiadczenie</th>
+            </tr>
+            {% for job in jobs%}
+            <tr>
+                <th>{{job.job_name}}</th>
+                <th>{{job.job_expirience}}</th>
+            </tr>
+            {% endfor%}
+        </table>
+    </div>
+    <div class="main_box_03_04">
+        Języki
+    </div>
+    <div class="main_box_03_table">
+        <table>
+            <tr>
+                <th>Język</th>
+                <th>Poziom</th>
+            </tr>
+            {% for language in languages%}
+            <tr>
+                <th>{{language.language_name}}</th>
+                <th>{{language.level}}</th>
+            </tr>
+            {% endfor%}
+        </table>
+    </div>
+    <div class="main_box_03_06">
+        Dostępność
+    </div>
+    <div class="main_box_03_table">
+        OD: {{employee.available_from}} do {{employee.available_to}}
+    </div>
+</div>
+
+
+
+<div class="main_box_04">
+    <div class="main_box_04_01">
+        chce pracowac jako
+    </div>
+    <div class="main_box_04_02">
+        {% for target in targets%}
+        {{target}}<hr>
+        {% endfor%}
+    </div>
+</div>
+
+
+{% include 'footer.html'%}
+{% endblock%}
+
