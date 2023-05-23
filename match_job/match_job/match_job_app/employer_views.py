@@ -15,9 +15,6 @@ from django.utils.decorators import method_decorator
 from .decorators import checking_role
 
 
-
-
-
 @method_decorator(checking_role("employer"), name="dispatch")
 class EmployerProfileView(LoginRequiredMixin, DetailView):
     login_url = "login"    

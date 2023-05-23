@@ -1,203 +1,30 @@
-from typing import Any, Dict
-from .models import (
-    Employee,
-    Employer,
-    EmployeeJob,
-    EmployeeLanguage,
-    EmployeeJobTarget,
-    JobPost,
-)
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from .constants import JOBS,JOB_EXPIRIENCE
-from datetime import datetime
-from .validators import StringInputValidator,FileInputValidator
 
+from .employer_froms import *
+from .employee_forms import *
 
 class DateInput(forms.DateInput):
     input_type = "date"
-
 
 class RegistrationEmployeeForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
 
-
 class RegistrationEmployerForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
 
-
 class LoginForm(AuthenticationForm):
     class Meta:
         pass
 
-
-class UpdateBaseInformationEmployeeForm(forms.ModelForm):
-    name = forms.CharField(
-        max_length=100, label="Imie", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    last_name = forms.CharField(
-        max_length=100, label="Nazwisko", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    available_from = forms.DateField(widget=DateInput())
-    available_to = forms.DateField(widget=DateInput())
-    profile_pic = forms.FileField()
-
-    class Meta:
-        model = Employee
-        fields = ("name", "last_name", "available_from", "available_to", "profile_pic")
-
-    def clean_available_to(self) -> Dict[str, Any]:
-        available_from = self.cleaned_data["available_from"]
-        available_to = self.cleaned_data["available_to"]
-        today = datetime.today().strftime("%Y-%m-%d")
-        if available_from > available_to:
-            raise ValidationError(
-                "Data rozpoczęcia musi być większa od daty zakończenia"
-            )
-        elif datetime.strftime(available_from, "%Y-%m-%d") < today:
-            raise ValidationError(
-                "Data rozpoczęcia pracy nie może być wcześniejsza niż dzisiejsza"
-            )
-        else:
-            return available_to
-
-    def clean_name(self) -> Dict[str, Any]:
-        name = self.cleaned_data["name"]
-        string_validator = StringInputValidator(name)
-        string_validator.only_polish_letter()
-        string_validator.space_check()
-        return name
-
-    def clean_last_name(self) -> Dict[str, Any]:
-        last_name = self.cleaned_data["last_name"]
-        string_validator = StringInputValidator(last_name)
-        string_validator.only_polish_letter()
-        string_validator.space_check()
-        return last_name
-    
-    def clean_profile_pic(self):
-        self.profile_pic = self.cleaned_data['profile_pic']
-        file_validator = FileInputValidator(self.profile_pic)
-        file_validator.allowed_size(10)
-        return self.profile_pic
-
-
-class CreateEmployeeLanguageForm(forms.ModelForm):
-    def __init__(self, employee_user, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.user = employee_user
-
-    class Meta:
-        model = EmployeeLanguage
-        fields = ("language_name", "level")
-
-class EditEmployeeLanguageForm(forms.ModelForm):
-    class Meta:
-        model = EmployeeLanguage
-        fields = ("language_name", "level")
-
-
-class CreateEmployeeJobForm(forms.ModelForm):
-    job_name = forms.CharField(
-        max_length=100, label="Stanowisko", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    description = forms.CharField(
-        max_length=200,
-        label="Opis",
-        widget=forms.TextInput(
-            attrs={"cols": 40, "row": 3, "style": "width:300px;height:100px"}
-        ),
-    )
-    work_from = forms.DateField(widget=DateInput())
-    work_to = forms.DateField(widget=DateInput())
-
-    class Meta:
-        model = EmployeeJob
-        fields = ("job_name", "description",'job_expirience', "work_from", "work_to")
-
-    def clean_work_to(self) -> Dict[str, Any]:
-        work_from = self.cleaned_data["work_from"]
-        work_to = self.cleaned_data["work_to"]
-        if work_from > work_to:
-            raise ValidationError(
-                "Data rozpoczęcia musi być większa od daty zakończenia"
-            )
-        else:
-            return work_to
-
-
-class AddEmployeeJobTarget(forms.ModelForm):
-    target_name = forms.MultipleChoiceField(choices=JOBS)
-
-    class Meta:
-        model = EmployeeJobTarget
-        fields = ("target_name",)
-
-    def clean_target_name(self) -> Dict[str, Any]:
-        target_name = self.cleaned_data["target_name"]
-        target_name = ",".join(target_name)
-        return target_name
-
-
-class ChoiceTypeOfEmployee(
-    forms.Form
-):  # do zmiany jak zostanie poprawiny front home (formularz do pracy na wakcje)
+class ChoiceTypeOfEmployee(forms.Form):  # do zmiany jak zostanie poprawiny front home (formularz do pracy na wakcje)
     choice_field = forms.ChoiceField(
         choices=((1, "xxx"), (2, "zzz")),
         widget=forms.ChoiceField,
     )
 
-
-class UpdateBaseInformationEmployerForm(forms.ModelForm):
-    company_name = forms.CharField(
-        max_length=100, label="Nazwa", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    company_address = forms.CharField(
-        max_length=200, label="Adres", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    company_description = forms.CharField(
-        max_length=600, label="Opis", widget=forms.TextInput(attrs={"size": "20"})
-    )
-    company_pic = forms.FileField(label='Logo')
-    class Meta:
-        model = Employer
-        fields = (
-            "company_name",
-            "company_address",
-            "company_description",
-            "company_pic"
-        )
-
-    def clean_company_pic(self):
-        self.company_pic = self.cleaned_data['company_pic']
-        file_validator = FileInputValidator(self.company_pic)
-        file_validator.allowed_size(10)
-        return self.company_pic
-
-
-class CreateJobPostForm(forms.ModelForm):
-    title = forms.CharField(
-        max_length=100,
-        label="Tytuł ogłoszenia",
-        widget=forms.TextInput(attrs={"size": "20"}),
-    )
-    description = forms.CharField(
-        max_length=600,
-        label="Opis",
-        widget=forms.TextInput(attrs={"style": "width:300px;height:100px"}),
-    )
-    requirements = forms.CharField(
-        max_length=600,
-        label="Wymagania",
-        widget=forms.TextInput(attrs={"style": "width:300px;height:100px"}),
-    )
-
-    class Meta:
-        model = JobPost
-        fields = ("title", "description", "requirements")
