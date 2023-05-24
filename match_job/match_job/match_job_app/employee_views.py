@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django.shortcuts import redirect
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.http.response import HttpResponse, HttpResponseRedirect
@@ -8,6 +9,7 @@ from django.views.generic import (
     UpdateView,
     DetailView,
     ListView,
+    RedirectView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
@@ -216,14 +218,28 @@ class AddEmployeeTargetJobView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-
 class ShowEmployeesView(LoginRequiredMixin,ListView):
     login_url = "login"
     template_name = "show_employees.html"
     context_object_name = 'employees'
     paginate_by = 6
     queryset = Employee.objects.all()
+    pk_url_kwarg = "target_filter"
 
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = super().get_queryset()   
+        try:
+            target_filter = self.kwargs['target_filter']
+        except:
+            return queryset
+        queryset = Employee.objects.filter(target__target_name__icontains=target_filter)
+        return queryset
+    
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        target_filter = self.request.POST.get('target_filter')
+        target_filter = target_filter.lower()
+        return redirect('show_employees_filtered',target_filter)
+        
 
 
 class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):

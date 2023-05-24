@@ -21,6 +21,18 @@
     margin-left: 20px;
 }
 
+.inner_box_of_main_box_01_choice_01{
+    background-color: rgb(201, 137, 137);
+    font-size: 25px;
+}
+
+.inner_box_of_main_box_01_choice_02{
+    font-size: 25px;
+    margin-top: 5px;
+    background-color: rgb(201, 132, 132);
+}
+
+
 .inner_box_of_main_box_02_05_01{
     float: left;
 }

@@ -20,14 +20,8 @@
     <div class="main_box_01">
         <div class="inner_box_of_main_box_01" >
             <h2>Szukam</h2>
-            <form method="post">
-                {% csrf_token%}
-                <input type="radio" name="job_choice" value="employee">
-                <label for="html">Pracy na wakacje</label><br>
-                <input type="radio" name="job_choice" value="employer">
-                <label for="css">Pracownika na wakacje</label><br>
-                <input type="submit" value="utwórz konto">
-            </form>
+            <a href="show_employees"><div class="inner_box_of_main_box_01_choice_01">Pracownika</div></a>
+            <a href="show_employees"><div class="inner_box_of_main_box_01_choice_02">Pracodawcy</div></a>
 
         </div>
     </div>

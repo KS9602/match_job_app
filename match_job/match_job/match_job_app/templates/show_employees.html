@@ -8,6 +8,14 @@
 
     {% include 'navbar.html'%}
 
+    <div class="target_filter">
+        <form method="post">
+            {% csrf_token%}
+            <input type="text" name="target_filter">
+            <input type="submit">
+        </form>
+    </div>
+
     <div class="main_box_01">
         <div class="main_box_01_01">
         {% for employee in employees%}

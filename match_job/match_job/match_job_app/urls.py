@@ -81,6 +81,7 @@ urlpatterns = [
     ),
     path("employee_public_profile/<int:pk>",PublicEmployeeProfileView.as_view(),name="employee_public_profile"),
     path("employer_public_profile/<int:pk>",PublicEmployerProfileView.as_view(),name="employer_public_profile"),
-    path("show_employees/",ShowEmployeesView.as_view(),name="show_employees")
+    path("show_employees/",ShowEmployeesView.as_view(),name="show_employees"),
+    path("show_employees/<str:target_filter>",ShowEmployeesView.as_view(),name="show_employees_filtered")
 
 ]
