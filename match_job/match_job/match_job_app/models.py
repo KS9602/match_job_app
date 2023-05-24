@@ -34,7 +34,7 @@ class Employee(models.Model):
 
 class EmployeeLanguage(models.Model):
     language_name = models.CharField(
-        max_length=50, choices=LANGUAGE_CHOICES, default="Polski"
+        max_length=50, default="Polski"
     )
     level = models.CharField(
         max_length=50, choices=LANGUAGE_LEVEL_CHOICES, default="MASTER"

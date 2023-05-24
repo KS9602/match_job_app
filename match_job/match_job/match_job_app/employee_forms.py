@@ -7,7 +7,7 @@ from .models import (
 )
 from django import forms
 from django.core.exceptions import ValidationError
-from .constants import JOBS
+from .constants import JOBS,LANGUAGE_CHOICES
 from datetime import datetime
 from .validators import StringInputValidator,FileInputValidator
 
@@ -70,9 +70,18 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.user = employee_user
 
+    language_name = forms.ChoiceField(choices=LANGUAGE_CHOICES)
     class Meta:
         model = EmployeeLanguage
         fields = ("language_name", "level")
+
+    def clean_language_name(self) -> Dict[str, Any]:
+        language_name = self.cleaned_data["language_name"]
+        language_name = language_name.lower()
+        languages = [language.language_name for language in EmployeeLanguage.objects.filter(language_user=self.user)]
+        if language_name in languages:
+            raise ValidationError(f'Język {language_name} jest już przez Ciebie wybrany')
+        return language_name
 
 class EditEmployeeLanguageForm(forms.ModelForm):
     class Meta:
@@ -110,7 +119,11 @@ class CreateEmployeeJobForm(forms.ModelForm):
 
 
 class AddEmployeeJobTarget(forms.ModelForm):
-    target_name = forms.MultipleChoiceField(choices=JOBS)
+    def __init__(self, employee_user, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.user = employee_user
+
+    target_name = forms.ChoiceField(choices=JOBS)
 
     class Meta:
         model = EmployeeJobTarget
@@ -118,5 +131,8 @@ class AddEmployeeJobTarget(forms.ModelForm):
 
     def clean_target_name(self) -> Dict[str, Any]:
         target_name = self.cleaned_data["target_name"]
-        target_name = ",".join(target_name)
+        target_name = target_name.lower()
+        targets = [target.target_name for target in EmployeeJobTarget.objects.filter(target_user=self.user)]
+        if target_name in targets:
+            raise ValidationError(f'Zawód {target_name} jest już przez Ciebie poszukiwany')
         return target_name

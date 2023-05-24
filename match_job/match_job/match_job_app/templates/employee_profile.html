@@ -71,9 +71,21 @@
       </table>
 
       <h2>Chcę pracować jako</h2>
-      {% for target in targets%}
-      <ul>{{target}}</ul>
-      {% endfor%}
+      <table>
+        <tr>
+          <th>Zawód</th>
+          <th>Usuń</th>
+        </tr>
+        {% for target in targets%}
+         <tr>
+            <th>{{target.target_name}}</th>
+            <th><a href="{% url 'employee_delete_target' employee.id target.id%}">Usuń</a></th>
+          </tr>
+          {% endfor%}
+      </table>
+
+
+
 
     <p><a href="{% url 'employee_profile_update' employee.id%}">Edytuj dane</a></p>
     <a href="{% url 'employee_add_language' employee.id%}"><p>Dodaj język </p> 

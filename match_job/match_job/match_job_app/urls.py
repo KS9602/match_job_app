@@ -70,6 +70,11 @@ urlpatterns = [
         name="employee_add_target",
     ),
     path(
+        "employee_profile/<int:pk>/delete_target/<int:pk_job_target>",
+        DeleteEmployeeTargetView.as_view(),
+        name="employee_delete_target",
+    ),
+    path(
         "employer_profile/<int:pk>/add_job_post",
         AddJEmployerobPostView.as_view(),
         name="employer_add_job_post",
