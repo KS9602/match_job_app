@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
-from .constants import LANGUAGE_CHOICES, LANGUAGE_LEVEL_CHOICES, JOB_EXPIRIENCE
+from .constants import LANGUAGE_LEVEL_CHOICES, JOB_EXPIRIENCE
 
 
 def employee_directory_path(instance, filename):
@@ -96,3 +96,7 @@ class JobPost(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+
+

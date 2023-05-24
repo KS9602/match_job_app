@@ -1,9 +1,9 @@
-from .models import (
+from ..models import (
     Employer,
     JobPost,
 )
 from django import forms
-from .validators import FileInputValidator
+from ..validators import FileInputValidator
 
 
 

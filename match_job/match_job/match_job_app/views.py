@@ -15,8 +15,8 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 
 
-from .employer_views import *
-from .employee_views import *
+from .employer.employer_views import *
+from .employee.employee_views import *
 
 def init_app(request):
     if Group.objects.all().count() < 2:
