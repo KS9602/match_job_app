@@ -5,6 +5,7 @@ from ..models import (
     JobPost,
 )
 
+
 class UpdateBaseInformationEmployerForm(forms.ModelForm):
     company_name = forms.CharField(
         max_length=100, label="Nazwa", widget=forms.TextInput(attrs={"size": "20"})
@@ -52,6 +53,7 @@ class CreateJobPostForm(forms.ModelForm):
 
     class Meta:
         model = JobPost
-        fields = ("title", "description",)
-
-
+        fields = (
+            "title",
+            "description",
+        )

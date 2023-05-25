@@ -5,29 +5,58 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('match_job_app', '0002_remove_jobpost_requirements_and_more'),
+        ("match_job_app", "0002_remove_jobpost_requirements_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='JobPostRequirementMustHave',
+            name="JobPostRequirementMustHave",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('requirement', models.CharField(max_length=100, null=True)),
-                ('job_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_post_requirement_must_have', to='match_job_app.jobpost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("requirement", models.CharField(max_length=100, null=True)),
+                (
+                    "job_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="job_post_requirement_must_have",
+                        to="match_job_app.jobpost",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='JobPostRequirementOptional',
+            name="JobPostRequirementOptional",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('requirement', models.CharField(max_length=100, null=True)),
-                ('job_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_post_requirement_nice_to_have', to='match_job_app.jobpost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("requirement", models.CharField(max_length=100, null=True)),
+                (
+                    "job_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="job_post_requirement_nice_to_have",
+                        to="match_job_app.jobpost",
+                    ),
+                ),
             ],
         ),
         migrations.DeleteModel(
-            name='JobPostRequirement',
+            name="JobPostRequirement",
         ),
     ]

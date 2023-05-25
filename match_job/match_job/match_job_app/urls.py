@@ -4,7 +4,7 @@ from .views import *
 
 urlpatterns = [
     path("init_app", init_app),
-    path('test',TesT.as_view()),
+    path("test", TesT.as_view()),
     path("", HomeView.as_view(), name="home"),
     path("choice_role", ChoiceRoleView.as_view(), name="registration_choice"),
     path(
@@ -87,8 +87,11 @@ urlpatterns = [
         EditEmployerJobPostView.as_view(),
         name="employer_edit_job_post",
     ),
-    path("employer_profile/<int:pk>/add_job_feature_requirement/<int:pk_post>",
-         AddJobRequirementFeatureView.as_view(),name="add_post_feature_requirement"),
+    path(
+        "employer_profile/<int:pk>/add_job_feature_requirement/<int:pk_post>",
+        AddJobRequirementFeatureView.as_view(),
+        name="add_post_feature_requirement",
+    ),
     path(
         "employee_public_profile/<int:pk>",
         PublicEmployeeProfileView.as_view(),

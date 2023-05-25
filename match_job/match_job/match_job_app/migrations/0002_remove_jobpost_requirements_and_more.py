@@ -7,56 +7,127 @@ import match_job_app.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('match_job_app', '0001_initial'),
+        ("match_job_app", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='jobpost',
-            name='requirements',
+            model_name="jobpost",
+            name="requirements",
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='profile_pic',
-            field=models.ImageField(blank=True, default='default.jpeg', null=True, upload_to=match_job_app.models.employee_directory_path, validators=[django.core.validators.FileExtensionValidator(['jpg', 'png', 'jpeg'])]),
+            model_name="employee",
+            name="profile_pic",
+            field=models.ImageField(
+                blank=True,
+                default="default.jpeg",
+                null=True,
+                upload_to=match_job_app.models.employee_directory_path,
+                validators=[
+                    django.core.validators.FileExtensionValidator(
+                        ["jpg", "png", "jpeg"]
+                    )
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='employeejob',
-            name='job_expirience',
-            field=models.CharField(choices=[(1, 'Mniej niż sześć miesięcy'), (2, 'Rok'), (3, 'Rok - 3 lata'), (4, '3 lata - 5 lat'), (5, 'Powyżej 5 lat')], default='1', max_length=50, null=True),
+            model_name="employeejob",
+            name="job_expirience",
+            field=models.CharField(
+                choices=[
+                    (1, "Mniej niż sześć miesięcy"),
+                    (2, "Rok"),
+                    (3, "Rok - 3 lata"),
+                    (4, "3 lata - 5 lat"),
+                    (5, "Powyżej 5 lat"),
+                ],
+                default="1",
+                max_length=50,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='employeelanguage',
-            name='language_name',
-            field=models.CharField(default='Polski', max_length=50),
+            model_name="employeelanguage",
+            name="language_name",
+            field=models.CharField(default="Polski", max_length=50),
         ),
         migrations.AlterField(
-            model_name='employeelanguage',
-            name='level',
-            field=models.CharField(choices=[('C1', 'C1'), ('C2', 'C2'), ('B1', 'B1'), ('B2', 'B2'), ('A1', 'A1'), ('A2', 'A2')], default='MASTER', max_length=50),
+            model_name="employeelanguage",
+            name="level",
+            field=models.CharField(
+                choices=[
+                    ("C1", "C1"),
+                    ("C2", "C2"),
+                    ("B1", "B1"),
+                    ("B2", "B2"),
+                    ("A1", "A1"),
+                    ("A2", "A2"),
+                ],
+                default="MASTER",
+                max_length=50,
+            ),
         ),
         migrations.AlterField(
-            model_name='employer',
-            name='company_pic',
-            field=models.ImageField(blank=True, default='default.jpeg', null=True, upload_to=match_job_app.models.employer_directory_path, validators=[django.core.validators.FileExtensionValidator(['jpg', 'png', 'jpeg'])]),
+            model_name="employer",
+            name="company_pic",
+            field=models.ImageField(
+                blank=True,
+                default="default.jpeg",
+                null=True,
+                upload_to=match_job_app.models.employer_directory_path,
+                validators=[
+                    django.core.validators.FileExtensionValidator(
+                        ["jpg", "png", "jpeg"]
+                    )
+                ],
+            ),
         ),
         migrations.CreateModel(
-            name='JobPostRequirement',
+            name="JobPostRequirement",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('requirement', models.CharField(max_length=100, null=True)),
-                ('imporatnce', models.CharField(max_length=100, null=True)),
-                ('job_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_post_requirement', to='match_job_app.jobpost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("requirement", models.CharField(max_length=100, null=True)),
+                ("imporatnce", models.CharField(max_length=100, null=True)),
+                (
+                    "job_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="job_post_requirement",
+                        to="match_job_app.jobpost",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='JobPostFeature',
+            name="JobPostFeature",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('feature', models.CharField(max_length=100, null=True)),
-                ('job_post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='job_post_feature', to='match_job_app.jobpost')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("feature", models.CharField(max_length=100, null=True)),
+                (
+                    "job_post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="job_post_feature",
+                        to="match_job_app.jobpost",
+                    ),
+                ),
             ],
         ),
     ]

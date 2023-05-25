@@ -126,7 +126,4 @@ JOB_EXPIRIENCE = (
     (5, "Powyżej 5 lat"),
 )
 
-IMPORTANCE = (
-    (1,"Obowiązkowo"),
-    (2,"Mile widziane")
-)
+IMPORTANCE = ((1, "Obowiązkowo"), (2, "Mile widziane"))

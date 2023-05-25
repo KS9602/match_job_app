@@ -100,18 +100,26 @@ class JobPost(models.Model):
 
     def __str__(self):
         return self.title
-    
-class JobPostRequirementMustHave(models.Model):
 
-    requirement = models.CharField(max_length=100,null=True)
-    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_requirement_must_have')
+
+class JobPostRequirementMustHave(models.Model):
+    requirement = models.CharField(max_length=100, null=True)
+    job_post = models.ForeignKey(
+        JobPost, on_delete=models.CASCADE, related_name="job_post_requirement_must_have"
+    )
+
 
 class JobPostRequirementOptional(models.Model):
+    requirement = models.CharField(max_length=100, null=True)
+    job_post = models.ForeignKey(
+        JobPost,
+        on_delete=models.CASCADE,
+        related_name="job_post_requirement_nice_to_have",
+    )
 
-    requirement = models.CharField(max_length=100,null=True)
-    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_requirement_nice_to_have')
 
 class JobPostFeature(models.Model):
-
-    feature = models.CharField(max_length=100,null=True)
-    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_feature')
+    feature = models.CharField(max_length=100, null=True)
+    job_post = models.ForeignKey(
+        JobPost, on_delete=models.CASCADE, related_name="job_post_feature"
+    )
