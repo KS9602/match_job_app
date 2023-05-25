@@ -14,14 +14,15 @@ from ..decorators import checking_role
 from .employee_forms import (
     CreateEmployeeLanguageForm,
     EditEmployeeLanguageForm,
-    )
+)
 from ..models import (
     Employee,
     EmployeeLanguage,
-    )
+)
+
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class AddLanguageView(LoginRequiredMixin, CreateView): 
+class AddLanguageView(LoginRequiredMixin, CreateView):
     login_url = "login"
     template_name = "add_language.html"
     model = EmployeeLanguage
@@ -45,7 +46,7 @@ class AddLanguageView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
-class EditLanguageView(LoginRequiredMixin, UpdateView): 
+class EditLanguageView(LoginRequiredMixin, UpdateView):
     login_url = "login"
     template_name = "update_language.html"
     pk_url_kwarg = "pk_lang"

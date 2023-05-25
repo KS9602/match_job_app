@@ -7,12 +7,14 @@ from ..models import (
 )
 from django import forms
 from django.core.exceptions import ValidationError
-from ..constants import JOBS,LANGUAGE_CHOICES
+from ..constants import JOBS, LANGUAGE_CHOICES
 from datetime import datetime
-from ..validators import StringInputValidator,FileInputValidator
+from ..validators import StringInputValidator, FileInputValidator
+
 
 class DateInput(forms.DateInput):
     input_type = "date"
+
 
 class UpdateBaseInformationEmployeeForm(forms.ModelForm):
     name = forms.CharField(
@@ -57,9 +59,9 @@ class UpdateBaseInformationEmployeeForm(forms.ModelForm):
         string_validator.only_polish_letter()
         string_validator.space_check()
         return last_name
-    
+
     def clean_profile_pic(self):
-        self.profile_pic = self.cleaned_data['profile_pic']
+        self.profile_pic = self.cleaned_data["profile_pic"]
         file_validator = FileInputValidator(self.profile_pic)
         file_validator.allowed_size(10)
         return self.profile_pic
@@ -71,6 +73,7 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
         self.user = employee_user
 
     language_name = forms.ChoiceField(choices=LANGUAGE_CHOICES)
+
     class Meta:
         model = EmployeeLanguage
         fields = ("language_name", "level")
@@ -78,10 +81,16 @@ class CreateEmployeeLanguageForm(forms.ModelForm):
     def clean_language_name(self) -> Dict[str, Any]:
         language_name = self.cleaned_data["language_name"]
         language_name = language_name.lower()
-        languages = [language.language_name for language in EmployeeLanguage.objects.filter(language_user=self.user)]
+        languages = [
+            language.language_name
+            for language in EmployeeLanguage.objects.filter(language_user=self.user)
+        ]
         if language_name in languages:
-            raise ValidationError(f'Język {language_name} jest już przez Ciebie wybrany')
+            raise ValidationError(
+                f"Język {language_name} jest już przez Ciebie wybrany"
+            )
         return language_name
+
 
 class EditEmployeeLanguageForm(forms.ModelForm):
     class Meta:
@@ -105,7 +114,7 @@ class CreateEmployeeJobForm(forms.ModelForm):
 
     class Meta:
         model = EmployeeJob
-        fields = ("job_name", "description",'job_expirience', "work_from", "work_to")
+        fields = ("job_name", "description", "job_expirience", "work_from", "work_to")
 
     def clean_work_to(self) -> Dict[str, Any]:
         work_from = self.cleaned_data["work_from"]
@@ -132,7 +141,12 @@ class AddEmployeeJobTarget(forms.ModelForm):
     def clean_target_name(self) -> Dict[str, Any]:
         target_name = self.cleaned_data["target_name"]
         target_name = target_name.lower()
-        targets = [target.target_name for target in EmployeeJobTarget.objects.filter(target_user=self.user)]
+        targets = [
+            target.target_name
+            for target in EmployeeJobTarget.objects.filter(target_user=self.user)
+        ]
         if target_name in targets:
-            raise ValidationError(f'Zawód {target_name} jest już przez Ciebie poszukiwany')
+            raise ValidationError(
+                f"Zawód {target_name} jest już przez Ciebie poszukiwany"
+            )
         return target_name

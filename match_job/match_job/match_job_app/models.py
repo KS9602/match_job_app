@@ -9,6 +9,7 @@ def employee_directory_path(instance, filename):
     file = filename
     return f"employee_{user}/{file}"
 
+
 def employer_directory_path(instance, filename):
     user = instance.user
     file = filename
@@ -22,9 +23,11 @@ class Employee(models.Model):
     available_from = models.CharField(max_length=50, null=True)
     available_to = models.CharField(max_length=50, null=True)
     profile_pic = models.ImageField(
-        default='default.jpeg',
-        upload_to=employee_directory_path, null=True, blank=True,
-        validators=[FileExtensionValidator(['jpg','png','jpeg'])]
+        default="default.jpeg",
+        upload_to=employee_directory_path,
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator(["jpg", "png", "jpeg"])],
     )
     created = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -33,9 +36,7 @@ class Employee(models.Model):
 
 
 class EmployeeLanguage(models.Model):
-    language_name = models.CharField(
-        max_length=50, default="Polski"
-    )
+    language_name = models.CharField(max_length=50, default="Polski")
     level = models.CharField(
         max_length=50, choices=LANGUAGE_LEVEL_CHOICES, default="MASTER"
     )
@@ -51,7 +52,9 @@ class EmployeeLanguage(models.Model):
 class EmployeeJob(models.Model):
     job_name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, null=True)
-    job_expirience = models.CharField(max_length=50,choices=JOB_EXPIRIENCE,default='1',null=True)
+    job_expirience = models.CharField(
+        max_length=50, choices=JOB_EXPIRIENCE, default="1", null=True
+    )
     work_from = models.CharField(max_length=50, null=True)
     work_to = models.CharField(max_length=50, null=True)
     job_user = models.ForeignKey(
@@ -78,9 +81,11 @@ class Employer(models.Model):
     company_description = models.TextField(null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
     company_pic = models.ImageField(
-        default='default.jpeg',
-        upload_to=employer_directory_path, blank=True, null=True,
-        validators=[FileExtensionValidator(['jpg','png','jpeg'])]  
+        default="default.jpeg",
+        upload_to=employer_directory_path,
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(["jpg", "png", "jpeg"])],
     )
 
     def __str__(self) -> str:
@@ -90,13 +95,23 @@ class Employer(models.Model):
 class JobPost(models.Model):
     title = models.CharField(max_length=100, null=True)
     description = models.TextField(null=True)
-    requirements = models.TextField(null=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
-    employer = models.ForeignKey("Employer", on_delete=models.CASCADE)
+    employer = models.ForeignKey(Employer, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
     
+class JobPostRequirementMustHave(models.Model):
 
+    requirement = models.CharField(max_length=100,null=True)
+    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_requirement_must_have')
 
+class JobPostRequirementOptional(models.Model):
 
+    requirement = models.CharField(max_length=100,null=True)
+    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_requirement_nice_to_have')
+
+class JobPostFeature(models.Model):
+
+    feature = models.CharField(max_length=100,null=True)
+    job_post = models.ForeignKey(JobPost,on_delete=models.CASCADE,related_name='job_post_feature')

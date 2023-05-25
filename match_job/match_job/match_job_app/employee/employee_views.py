@@ -16,17 +16,13 @@ from ..decorators import checking_role
 from .employee_forms import (
     EmployeeJobTarget,
     UpdateBaseInformationEmployeeForm,
-    )
-from ..models import (
-    Employee,
-    EmployeeJob,
-    EmployeeLanguage,
-    EmployeeJobTarget
-    )
+)
+from ..models import Employee, EmployeeJob, EmployeeLanguage, EmployeeJobTarget
 
-from .language_views import AddLanguageView,EditLanguageView,DeleteLanguageView
-from .job_views import AddJobView,EditJobView,DeleteJobView
-from .job_target_views import AddEmployeeTargetJobView,DeleteEmployeeTargetView
+from .language_views import AddLanguageView, EditLanguageView, DeleteLanguageView
+from .job_views import AddJobView, EditJobView, DeleteJobView
+from .job_target_views import AddEmployeeTargetJobView, DeleteEmployeeTargetView
+
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EmployeeProfile(LoginRequiredMixin, DetailView):
@@ -66,36 +62,34 @@ class EditBaseInformationEmployeeView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         return super().form_valid(form)
 
-    
 
-class ShowEmployeesView(LoginRequiredMixin,ListView):
+class ShowEmployeesView(LoginRequiredMixin, ListView):
     login_url = "login"
     template_name = "show_employees.html"
-    context_object_name = 'employees'
+    context_object_name = "employees"
     paginate_by = 6
     queryset = Employee.objects.all()
     pk_url_kwarg = "target_filter"
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = super().get_queryset()   
+        queryset = super().get_queryset()
         try:
-            target_filter = self.kwargs['target_filter']
+            target_filter = self.kwargs["target_filter"]
         except:
             return queryset
         queryset = Employee.objects.filter(target__target_name__icontains=target_filter)
         return queryset
-    
+
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-        target_filter = self.request.POST.get('target_filter')
+        target_filter = self.request.POST.get("target_filter")
         target_filter = target_filter.lower()
-        return redirect('show_employees_filtered',target_filter)
-        
+        return redirect("show_employees_filtered", target_filter)
 
 
 class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
     login_url = "login"
-    template_name = 'public_employee_profile.html'
-    context_object_name = 'employee'
+    template_name = "public_employee_profile.html"
+    context_object_name = "employee"
     model = Employee
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -116,4 +110,3 @@ class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
             context["targets"],
         ) = (employee, jobs, languages, targets)
         return context
-    

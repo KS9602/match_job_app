@@ -13,18 +13,17 @@ from django.utils.decorators import method_decorator
 from ..decorators import checking_role
 from .employee_forms import (
     CreateEmployeeJobForm,
-    )
+)
 from ..models import (
     Employee,
     EmployeeJob,
     EmployeeLanguage,
-    )
-
+)
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class AddJobView(LoginRequiredMixin, CreateView):
-    template_name = "add_job_history.html"  
+    template_name = "add_job_history.html"
     login_url = "login"
     model = EmployeeJob
     form_class = CreateEmployeeJobForm
@@ -43,7 +42,7 @@ class AddJobView(LoginRequiredMixin, CreateView):
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class EditJobView(LoginRequiredMixin, UpdateView):
-    login_url = "login"  
+    login_url = "login"
     template_name = "update_job.html"
     pk_url_kwarg = "pk_job"
     model = EmployeeJob

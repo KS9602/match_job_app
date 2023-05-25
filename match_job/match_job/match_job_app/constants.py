@@ -56,7 +56,7 @@ LANGUAGE_LEVEL_CHOICES = (
     ("B1", "B1"),
     ("B2", "B2"),
     ("A1", "A1"),
-    ("A2","A2")
+    ("A2", "A2"),
 )
 
 
@@ -119,10 +119,14 @@ JOBS = (
 
 
 JOB_EXPIRIENCE = (
-    ('1','Mniej niż sześć miesięcy'),
-    ('2','Rok'),
-    ('3','Rok - 3 lata'),
-    ('4','3 lata - 5 lat'),
-    ('5','Powyżej 5 lat'),
+    (1, "Mniej niż sześć miesięcy"),
+    (2, "Rok"),
+    (3, "Rok - 3 lata"),
+    (4, "3 lata - 5 lat"),
+    (5, "Powyżej 5 lat"),
 )
 
+IMPORTANCE = (
+    (1,"Obowiązkowo"),
+    (2,"Mile widziane")
+)

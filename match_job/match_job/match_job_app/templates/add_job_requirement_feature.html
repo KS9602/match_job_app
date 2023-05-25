@@ -1,0 +1,35 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/add_job_requirements_features.css' %}"/>
+{% endblock%}
+{% block title%} Dodaj Warunki i Wymagania{% endblock%}
+{% block body%}
+    {% include 'navbar.html'%}
+
+    <button id="button_01">+</button>
+    <button id="button_02">+</button>
+    <button id="button_03">+</button>
+    <form id="main_form" method="post" >
+        {% csrf_token%}
+        
+        <div id="form_requirements_must_have">
+        Wymagania obowiązkowe: <br>
+        <input type="text" class="requirement_must_have" id="requirement_must_have_01" name="requirement_must_have_01">
+        </div>
+
+        <div id="form_requirements_optional">
+            Mile widziane: <br>
+            <input type="text" class="requirement_optional" id="requirement_optional_01" name="requirement_optional_01">
+        </div>
+
+        <div id="form_features">
+        Warunki:<br>
+        <input type="text" class="feature" id="feature_01" name="feature_01">
+        </div>
+    <input type="submit">
+    </form>
+    
+
+<script src="{% static 'java_scripts/form_adding_input.js'%}"></script>
+{% endblock%}

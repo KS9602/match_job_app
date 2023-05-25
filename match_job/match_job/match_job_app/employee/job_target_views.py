@@ -10,14 +10,8 @@ from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from ..decorators import checking_role
-from .employee_forms import (
-    EmployeeJobTarget,
-    AddEmployeeJobTarget
-    )
-from ..models import (
-    Employee,
-    EmployeeJobTarget
-    )
+from .employee_forms import EmployeeJobTarget, AddEmployeeJobTarget
+from ..models import Employee, EmployeeJobTarget
 
 
 @method_decorator(checking_role("employee"), name="dispatch")
@@ -31,7 +25,7 @@ class AddEmployeeTargetJobView(LoginRequiredMixin, CreateView):
         pk = self.kwargs["pk"]
         url = reverse("employee_profile", kwargs={"pk": pk})
         return url
-    
+
     def get_form_kwargs(self) -> Dict[str, Any]:
         kargs = super().get_form_kwargs()
         kargs["employee_user"] = self.request.user.employee
@@ -42,6 +36,7 @@ class AddEmployeeTargetJobView(LoginRequiredMixin, CreateView):
         user = Employee.objects.get(user=self.request.user)
         form.instance.target_user = user
         return super().form_valid(form)
+
 
 @method_decorator(checking_role("employee"), name="dispatch")
 class DeleteEmployeeTargetView(LoginRequiredMixin, DeleteView):

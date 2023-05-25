@@ -1,7 +1,8 @@
 from typing import Any, Dict
+from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.http.response import HttpResponse
-from django.shortcuts import redirect,get_object_or_404
+from django.shortcuts import redirect, get_object_or_404,render
 from django.views.generic import (
     FormView,
     CreateView,
@@ -18,6 +19,8 @@ from django.contrib.auth.models import Group
 from .employer.employer_views import *
 from .employee.employee_views import *
 
+
+
 def init_app(request):
     if Group.objects.all().count() < 2:
         employee_group = Group(name="employee")
@@ -26,6 +29,9 @@ def init_app(request):
         employer_group.save()
     return redirect("home")
 
+
+class TesT(TemplateView):
+    template_name = 'test.html'
 
 class HomeView(TemplateView):
     template_name = "home.html"
@@ -110,5 +116,3 @@ class LogoutView(View):
     def get(self, *args, **kwargs) -> HttpResponse:
         logout(self.request)
         return redirect("home")
-
-

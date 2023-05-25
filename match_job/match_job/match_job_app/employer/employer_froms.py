@@ -1,11 +1,9 @@
+from django import forms
+from ..validators import FileInputValidator
 from ..models import (
     Employer,
     JobPost,
 )
-from django import forms
-from ..validators import FileInputValidator
-
-
 
 class UpdateBaseInformationEmployerForm(forms.ModelForm):
     company_name = forms.CharField(
@@ -17,18 +15,19 @@ class UpdateBaseInformationEmployerForm(forms.ModelForm):
     company_description = forms.CharField(
         max_length=600, label="Opis", widget=forms.TextInput(attrs={"size": "20"})
     )
-    company_pic = forms.FileField(label='Logo')
+    company_pic = forms.FileField(label="Logo")
+
     class Meta:
         model = Employer
         fields = (
             "company_name",
             "company_address",
             "company_description",
-            "company_pic"
+            "company_pic",
         )
 
     def clean_company_pic(self):
-        self.company_pic = self.cleaned_data['company_pic']
+        self.company_pic = self.cleaned_data["company_pic"]
         file_validator = FileInputValidator(self.company_pic)
         file_validator.allowed_size(10)
         return self.company_pic
@@ -53,4 +52,6 @@ class CreateJobPostForm(forms.ModelForm):
 
     class Meta:
         model = JobPost
-        fields = ("title", "description", "requirements")
+        fields = ("title", "description",)
+
+

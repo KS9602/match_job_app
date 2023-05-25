@@ -1,9 +1,10 @@
 from typing import Any
-from django.http import  HttpResponse
-from django.http.response import HttpResponse
+from django.shortcuts import render,redirect
+from django.http import HttpResponse,HttpRequest
 from django.views.generic import (
     CreateView,
     UpdateView,
+    View
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
@@ -12,7 +13,7 @@ from django.utils.decorators import method_decorator
 from ..decorators import checking_role
 
 from .employer_froms import CreateJobPostForm
-from ..models import Employer,JobPost
+from ..models import Employer, JobPost,JobPostFeature,JobPostRequirementOptional,JobPostRequirementMustHave
 
 
 @method_decorator(checking_role("employer"), name="dispatch")
@@ -50,4 +51,31 @@ class EditEmployerJobPostView(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset: QuerySet[Any] | None = ...) -> JobPost:
         job_post = JobPost.objects.get(id=self.kwargs["pk_post"])
         return job_post
+
+
+class AddJobRequirementFeatureView(View):
+
+    template_name = 'add_job_requirement_feature.html'
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        return render(request,self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs["pk"]
+        post = JobPost.objects.get(id=self.kwargs['pk_post']) 
+        form = self.request.POST
+        print(form)
+        features = [JobPostFeature(feature=form[key],job_post=post) for key in form.keys() 
+                    if 'feature' in key and form[key] != '' ]
+        requirements_must = [JobPostRequirementMustHave(requirement=form[key],job_post=post) for key in form.keys() 
+                        if 'requirement_must_have' in key and form[key] != '' ]
+        requirements_optional = [JobPostRequirementOptional(requirement=form[key],job_post=post) for key in form.keys() 
+                        if 'requirement_optional' in key and form[key] != '' ]
+
+        JobPostFeature.objects.bulk_create(features)
+        JobPostRequirementMustHave.objects.bulk_create(requirements_must)
+        JobPostRequirementOptional.objects.bulk_create(requirements_optional)
+        return redirect("employer_profile", pk)
     
+
+    # DODAC IMPORTANCE

@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path("init_app", init_app),
+    path('test',TesT.as_view()),
     path("", HomeView.as_view(), name="home"),
     path("choice_role", ChoiceRoleView.as_view(), name="registration_choice"),
     path(
@@ -22,7 +23,9 @@ urlpatterns = [
         "employee_profile/<int:pk>", EmployeeProfile.as_view(), name="employee_profile"
     ),
     path(
-        "employer_profile/<int:pk>", EmployerProfileView.as_view(), name="employer_profile"
+        "employer_profile/<int:pk>",
+        EmployerProfileView.as_view(),
+        name="employer_profile",
     ),
     path(
         "employee_profile/<int:pk>/update_information",
@@ -84,9 +87,22 @@ urlpatterns = [
         EditEmployerJobPostView.as_view(),
         name="employer_edit_job_post",
     ),
-    path("employee_public_profile/<int:pk>",PublicEmployeeProfileView.as_view(),name="employee_public_profile"),
-    path("employer_public_profile/<int:pk>",PublicEmployerProfileView.as_view(),name="employer_public_profile"),
-    path("show_employees/",ShowEmployeesView.as_view(),name="show_employees"),
-    path("show_employees/<str:target_filter>",ShowEmployeesView.as_view(),name="show_employees_filtered")
-
+    path("employer_profile/<int:pk>/add_job_feature_requirement/<int:pk_post>",
+         AddJobRequirementFeatureView.as_view(),name="add_post_feature_requirement"),
+    path(
+        "employee_public_profile/<int:pk>",
+        PublicEmployeeProfileView.as_view(),
+        name="employee_public_profile",
+    ),
+    path(
+        "employer_public_profile/<int:pk>",
+        PublicEmployerProfileView.as_view(),
+        name="employer_public_profile",
+    ),
+    path("show_employees/", ShowEmployeesView.as_view(), name="show_employees"),
+    path(
+        "show_employees/<str:target_filter>",
+        ShowEmployeesView.as_view(),
+        name="show_employees_filtered",
+    ),
 ]

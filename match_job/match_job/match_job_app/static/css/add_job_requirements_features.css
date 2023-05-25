@@ -1,0 +1,38 @@
+#form_requirements_must_have{
+    background-color: rgb(142, 82, 3);
+    float: left;
+    width: 200px;
+}
+
+.requirement_must_have{
+    background-color: brown;
+    width: 180px;
+}
+
+
+
+
+#form_requirements_optional{
+    background-color: rgb(219, 50, 50);
+    float: left;
+    width: 200px;
+    margin-left: 200px;
+}
+
+.requirements_optional{
+    background-color: rgb(235, 91, 110);
+    width: 200px;
+}
+
+
+
+
+
+#form_features{
+    background-color: aquamarine;
+    margin-left: 800px;
+    width: 200px;
+}
+.feature{
+    width: 200px;
+}
