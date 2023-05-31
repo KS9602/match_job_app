@@ -12,16 +12,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from ..decorators import checking_role
+from match_job_app.decorators.checking_role import checking_role
 from .employee_forms import (
     EmployeeJobTarget,
     UpdateBaseInformationEmployeeForm,
 )
-from ..models import Employee, EmployeeJob, EmployeeLanguage, EmployeeJobTarget
-
-from .language_views import AddLanguageView, EditLanguageView, DeleteLanguageView
-from .job_views import AddJobView, EditJobView, DeleteJobView
-from .job_target_views import AddEmployeeTargetJobView, DeleteEmployeeTargetView
+from match_job_app.models import Employee, EmployeeJob, EmployeeLanguage, EmployeeJobTarget
 
 
 @method_decorator(checking_role("employee"), name="dispatch")

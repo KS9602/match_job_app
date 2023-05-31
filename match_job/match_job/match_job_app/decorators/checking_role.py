@@ -1,6 +1,4 @@
 from django.shortcuts import redirect
-
-
 def checking_role(role: str):
     def checking_role(func):
         def wrapper(request, *args, **kwargs):

@@ -1,6 +1,6 @@
 from django import forms
-from ..validators import FileInputValidator
-from ..models import (
+from match_job_app.validators.file_validator import FileInputValidator
+from match_job_app.models import (
     Employer,
     JobPost,
 )

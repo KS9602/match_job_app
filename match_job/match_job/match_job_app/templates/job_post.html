@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+{% load static%}
+{% block extra_css%}
+
+{% endblock%}
+{% block title%} Dodaj Warunki i Wymagania{% endblock%}
+{% block body%}
+    {% include 'navbar.html'%}
+    
+    {{job_post.title}}<br>
+    {{job_post.description}}
+    <p>feature</p>
+    {%for feature in job_post_features%}
+    {{feature.feature}}
+    {% endfor%}
+    <hr>
+    <p>Wymagania must have</p>
+    {% for requirement_must in job_post_requirements_must %}
+    {{requirement_must.requirement}}
+    {% endfor%}
+    <hr>
+    <p>Wymagania opcjonalne</p>
+    {% for requirement_optional in job_post_requirements_optional %}
+    {{requirement_optional.requirement}}
+    {% endfor%}
+
+{% endblock%}

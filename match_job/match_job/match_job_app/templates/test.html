@@ -5,22 +5,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Document</title>
 </head>
-<body>
-    <div id="div_01">
-        <button id="guzik_01">+</button>
-    </div>
+<body style="background-color: rgb(165, 165, 165);">
 
-        <form id="form_name">
-            <input name="input_01">
-        </form>
-        {% for field in form %}
-        {{ field }}
-      {% endfor %}
+    <!-- <ul id="display-data">
+
+    </ul> -->
+
+    <form id="post_form" method="post" action="create">
+        {% csrf_token%}
+        <input type="text" name='name' id="name"><br>
+        <input type="text" name='last_name' id="last_name"><br>
+        <input type="text" name='bio' id="bio"><br>
+        <input type="submit">
+    </form>
+
+<script>
+// $(document).ready(function(){
+
+//     setInterval(function(){             // ustawienie interwalu na 1000 milisekund
+//         $.ajax({
+//             type:'GET',
+//             url: "{% url 'getProfile'%}",
+//             success: function(response){
+//                 //console.log(response);
+//                 $("#display-data").empty();
+//                 for( var key in response.profiles)
+//                 {
+//                     var temp = "<li>"+response.profiles[key].name+"</li>";
+//                     $("#display-data").append(temp);
+//                 }
+//             },
+//             error:function(response){
+//                 alert("Error data")
+//             }
+//         });
+//     },1000);
+// });
 
 
-    <script src="{% static 'java_scripts/test.js'%}"></script>
+$(document).on('submit','#post_form',function(e){
+
+    e.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'create' %}",
+        data:{
+            name:$('#name').val(),
+            last_name:$("#email").val(),
+            bio:$('#bio').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(data ){
+            alert(data);
+        },
+    });
+});
+
+</script>
+
 </body>
 </html>

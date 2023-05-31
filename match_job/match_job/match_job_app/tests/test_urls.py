@@ -4,7 +4,8 @@ from ..urls import urlpatterns
 from ..views import *
 
 
-class MatchJobUrlsTests(TestCase):
+class TestMatchJobUrls(TestCase):
+    
     def test_url_name_home(self):
         url = reverse("home")
         self.assertEqual(resolve(url).func.view_class, HomeView)
@@ -35,7 +36,7 @@ class MatchJobUrlsTests(TestCase):
 
     def test_url_name_employer_profile(self):
         url = reverse("employer_profile", args=[1])
-        self.assertEqual(resolve(url).func.view_class, EmployerProfile)
+        self.assertEqual(resolve(url).func.view_class, EmployerProfileView)
 
     def test_url_name_employee_profile_update(self):
         url = reverse("employee_profile_update", args=[1])
@@ -71,7 +72,7 @@ class MatchJobUrlsTests(TestCase):
 
     def test_url_name_employee_add_target(self):
         url = reverse("employee_add_target", args=[1])
-        self.assertEqual(resolve(url).func.view_class, AddEmployeeTargetJob)
+        self.assertEqual(resolve(url).func.view_class, AddEmployeeTargetJobView)
 
 
 class MatchJobUrlsTests(TestCase):

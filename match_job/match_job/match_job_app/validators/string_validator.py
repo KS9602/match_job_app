@@ -1,7 +1,6 @@
 from string import ascii_letters
 from django.core.exceptions import ValidationError
 
-
 class StringInputValidator:
     ascii_letters_list = [letter for letter in ascii_letters]
     polish_letter = ascii_letters_list + ["ą", "ć", "ę", "ł", "ń", "ó", "ś", "ź", "ż"]
@@ -38,17 +37,3 @@ class StringInputValidator:
                 raise ValidationError("Więcej niż jedna spacja jest niedozwolona")
 
         return True
-
-
-class FileInputValidator:
-    def __init__(self, file) -> None:
-        self.file = file
-
-    def allowed_size(self, size_MB: int) -> bool | ValidationError:
-        size_MB *= 1048576
-        if self.file.size > size_MB:
-            raise ValidationError(
-                f"Przesłany obraz ma za duży rozmiar. Dozwolony rozmiar to {size_MB}MB."
-            )
-        else:
-            return True

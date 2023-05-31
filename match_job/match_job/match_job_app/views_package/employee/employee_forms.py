@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from ..models import (
+from match_job_app.models import (
     Employee,
     EmployeeJob,
     EmployeeLanguage,
@@ -7,9 +7,10 @@ from ..models import (
 )
 from django import forms
 from django.core.exceptions import ValidationError
-from ..constants import JOBS, LANGUAGE_CHOICES
+from match_job_app.constants import JOBS, LANGUAGE_CHOICES
 from datetime import datetime
-from ..validators import StringInputValidator, FileInputValidator
+from match_job_app.validators.string_validator import StringInputValidator
+from match_job_app.validators.file_validator import FileInputValidator
 
 
 class DateInput(forms.DateInput):

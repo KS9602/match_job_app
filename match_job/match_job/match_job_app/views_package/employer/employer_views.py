@@ -6,12 +6,9 @@ from django.views.generic import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from ..decorators import checking_role
-
-from .employer_froms import UpdateBaseInformationEmployerForm
-from ..models import Employer, JobPost
-
-from .employer_job_post_views import *
+from match_job_app.decorators.checking_role import checking_role
+from match_job_app.forms.employer_froms import UpdateBaseInformationEmployerForm
+from match_job_app.models import Employer, JobPost
 
 
 @method_decorator(checking_role("employer"), name="dispatch")

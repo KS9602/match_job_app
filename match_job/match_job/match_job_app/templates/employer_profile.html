@@ -23,21 +23,19 @@
             <tr>
                 <th>Tytuł</th>
                 <th>Opis</th>
-                <th>Wymagania</th>
-                <th>Warunki</th>
                 <th>Edytuj</th>
-                <th>dodaj warunki</th>
-                <th>dodaj wymagania</th>
+                <th>Edytuj</th>
+                <th>Podgląd</th>
+
+
             </tr>
             {% for post in job_posts%}
             <tr>
                 <th>{{post.title}}</th>
                 <th>{{post.description}}</th>
-                <th>{{post.requirements}}</th>
-                <th>Warunki</th>
-                <th><a href="{% url 'employer_edit_job_post' employer.id post.id%}">Edytuj</a></th>
-                <th><a href="{% url 'add_post_feature_requirement' employer.id post.id%}">dodaj warunki</th></a>
-                <th>dodaj wymagania</th>
+                <th><a href="{% url 'employer_edit_job_post' employer.id post.id%}"><button>X</button></a></th>
+                <th><a href="{% url 'add_post_feature_requirement' employer.id post.id%}"><button>X</button></th></a>
+                <th><a href="{% url 'employer_job_post' employer.id post.id%}"><button>X</button></a></th>
             </tr>
             {%endfor%}
           </table>

@@ -1,6 +1,5 @@
 from django.urls import path
-from .views import *
-
+from match_job_app.views import *
 
 urlpatterns = [
     path("init_app", init_app),
@@ -86,6 +85,11 @@ urlpatterns = [
         "employer_profile/<int:pk>/edit_job_post/<int:pk_post>",
         EditEmployerJobPostView.as_view(),
         name="employer_edit_job_post",
+    ),
+        path(
+        "employer_profile/<int:pk>/job_post/<int:pk_post>",
+        JobPostView.as_view(),
+        name="employer_job_post",
     ),
     path(
         "employer_profile/<int:pk>/add_job_feature_requirement/<int:pk_post>",

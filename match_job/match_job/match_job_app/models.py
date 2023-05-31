@@ -52,9 +52,7 @@ class EmployeeLanguage(models.Model):
 class EmployeeJob(models.Model):
     job_name = models.CharField(max_length=50)
     description = models.TextField(max_length=200, null=True)
-    job_expirience = models.CharField(
-        max_length=50, choices=JOB_EXPIRIENCE, default="1", null=True
-    )
+    job_expirience = models.IntegerField( choices=JOB_EXPIRIENCE, default=1, null=True)
     work_from = models.CharField(max_length=50, null=True)
     work_to = models.CharField(max_length=50, null=True)
     job_user = models.ForeignKey(

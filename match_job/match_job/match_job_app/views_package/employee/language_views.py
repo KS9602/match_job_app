@@ -10,12 +10,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from ..decorators import checking_role
+from match_job_app.decorators.checking_role import checking_role
 from .employee_forms import (
     CreateEmployeeLanguageForm,
     EditEmployeeLanguageForm,
 )
-from ..models import (
+from match_job_app.models import (
     Employee,
     EmployeeLanguage,
 )
