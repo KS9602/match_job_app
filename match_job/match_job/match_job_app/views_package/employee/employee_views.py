@@ -78,8 +78,11 @@ class ShowEmployeesView(LoginRequiredMixin, ListView):
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         target_filter = self.request.POST.get("target_filter")
-        target_filter = target_filter.lower()
-        return redirect("show_employees_filtered", target_filter)
+        if target_filter == '':
+            return redirect('show_employees')
+        else:
+            target_filter = target_filter.lower()
+            return redirect("show_employees_filtered", target_filter)
 
 
 class PublicEmployeeProfileView(LoginRequiredMixin, DetailView):
