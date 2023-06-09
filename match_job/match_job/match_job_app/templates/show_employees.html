@@ -8,11 +8,11 @@
 
     {% include 'navbar.html'%}
 
-    <div class="target_filter">
+    <div class="target_filter" style="text-align: center;">
         <form method="post">
             {% csrf_token%}
             <input type="text" name="target_filter">
-            <input type="submit">
+            <input type="submit" value="filtruj zawody">
         </form>
     </div>
 

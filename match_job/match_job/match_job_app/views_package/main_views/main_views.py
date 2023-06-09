@@ -1,6 +1,7 @@
 from typing import Any,Dict
 from django.http import HttpRequest,HttpResponse
 from django.shortcuts import get_object_or_404
+from match_job_app.views_package.view_utils.random_users_roller import RandomUserRoller
 from django.views.generic import (
 TemplateView
 )
@@ -15,9 +16,8 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['employees'] = Employee.objects.all()
-
-
+        user_roller = RandomUserRoller().random_one_eployee_and_employer()
+        context["random_users"] = user_roller
 
         if self.request.user.groups.first() != None:
             if self.request.user.groups.first().name == "employer":

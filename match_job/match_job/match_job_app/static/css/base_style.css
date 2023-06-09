@@ -46,6 +46,9 @@ a:hover{
     text-align: center;
     font-size: 20px;
     float: right;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 .registration{
     size: 20px;
@@ -58,6 +61,9 @@ a:hover{
     text-align: center;
     font-size: 20px;
     float: right;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 
 .logout {
@@ -73,6 +79,9 @@ a:hover{
     text-align: center;
     font-size: 20px;
     float: left;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 
 .profile{
@@ -88,6 +97,9 @@ a:hover{
     text-align: center;
     font-size: 20px;
     float: left;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 
 .footer_div {

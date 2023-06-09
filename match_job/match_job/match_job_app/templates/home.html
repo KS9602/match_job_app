@@ -30,16 +30,22 @@
         <div class="inner_box_of_main_box_02_01">
             Klienci
         </div>
-        <div class="inner_box_of_main_box_02_02">guzik</div>
-        <div class="inner_box_of_main_box_02_03" >
-            <p>Pracownik</p>
-                <button id="x">X</button>
-                <div id="test_slider">
-                {{employees.1.name}}
-                </div>
+        <div class="inner_box_of_main_box_02_02" >
+            <div>Pracownik</div>
+            <div>                
+                {{random_users.0.name}}
+                {{random_users.0.last_name}}
+            </div>
+
+                <img class="inner_box_of_main_box_02_02_img" src="{{random_users.0.profile_pic.url}}" style="width: 150px;">
         </div>
-        <div class="inner_box_of_main_box_02_04">Pracodawca</div>
-        <div class="inner_box_of_main_box_02_05">guzik</div>
+        <div class="inner_box_of_main_box_02_03">
+            <div>Pracodawca</div>
+            <div>
+                {{random_users.1.company_name}}
+            </div>
+            <img class="inner_box_of_main_box_02_02_img" src="{{random_users.1.company_pic.url}}" style="width: 150px;">
+        </div>
     </div>
 
 
